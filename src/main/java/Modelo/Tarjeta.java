@@ -6,6 +6,14 @@ public class Tarjeta {
     private String fecha;
     private int cvv;
     private double saldo;
+    
+    public Tarjeta(int numero, String nombre, String fecha, int cvv, double saldo) {
+        this.numero = numero;
+        this.nombre = nombre;
+        this.fecha = fecha;
+        this.cvv = cvv;
+        this.saldo = saldo;
+    }
 
     public boolean validarDatos() {
         if (this.cvv > 99 && this.fecha != null && !this.fecha.isEmpty()) {
@@ -16,7 +24,7 @@ public class Tarjeta {
         return false;
     }
     
-    public boolean verificarFondo(int monto) {
+    public boolean verificarFondo(double monto) {
         if (this.saldo >= monto) {
             System.out.println("Hay fondos suficientes.");
             return true;
@@ -25,7 +33,7 @@ public class Tarjeta {
         return false;
     }
     
-    public boolean procesarCobro(int monto) {
+    public boolean procesarCobro(double monto) {
         if (validarDatos() && verificarFondo(monto)) {
             this.saldo = this.saldo - monto;
             System.out.println("Cobro exitoso. Tu nuevo saldo es: " + this.saldo);
