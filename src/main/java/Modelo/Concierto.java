@@ -12,8 +12,8 @@ public class Concierto {
         this.zonas = new ArrayList<>();
     }
     
-    public boolean agregarZona(String nombre){
-        Zona nuevaZona = new Zona();
+    public boolean agregarZona(String nombre, int capacidad, double precio){
+        Zona nuevaZona = new Zona(nombre, capacidad, precio);
         zonas.add(nuevaZona);
         return true;
     }

@@ -5,23 +5,30 @@ import java.util.ArrayList;
 
 public class Venta {
     private Date fecha;
-    private int monto;
+    private double monto;
     private List<Entrada> entradas;
     
     public Venta(){
         this.entradas = new ArrayList<>();
+        this.fecha = new Date();
+        this.monto = 0.0;
     }
     
     public boolean anular(){
         return true;
     }
     
-    //Método para limitar entradas a 4 por venta
-    public boolean agregarEntrada(Entrada e){
-        if(entradas.size() < 4){
-            entradas.add(e);
-            return true;
+    public boolean agregarEntrada(Entrada e, double precio){
+        if (entradas.size() >= 4) {
+            throw new IllegalArgumentException("No puedes comprar más de 4 entradas por venta");
         }
-        return false;
+        entradas.add(e);
+        this.monto += precio;
+        
+        return true;
+    }
+    
+    public double getMonto() {
+        return monto;
     }
 }
