@@ -18,6 +18,84 @@ public class VistaCompra extends javax.swing.JFrame {
     public VistaCompra() {
         initComponents();
     }
+    public String getZonaSeleccionada() {
+    return cboZona.getSelectedItem().toString();
+    }
+
+    public int getCantidad() {
+        return Integer.parseInt(spnCantidad.getValue().toString());
+    }
+
+    public int getNumeroTarjeta() {
+        return Integer.parseInt(txtNumeroTarjeta.getText().trim());
+    }
+
+    public String getNombreTarjeta() {
+        return txtNombreTarjeta.getText().trim();
+    }
+
+    public String getFechaTarjeta() {
+        return txtFechaTarjeta.getText().trim();
+    }
+
+    public int getCvv() {
+        return Integer.parseInt(txtCvv.getText().trim());
+    }
+
+    public double getSaldo() {
+        return Double.parseDouble(txtSaldo.getText().trim());
+    }
+
+    public void setMonto(double monto) {
+        lblMonto.setText("Monto: S/ " + monto);
+    }
+
+    public void setResumen(String resumen) {
+        txtResumen.setText(resumen);
+    }
+
+    public void mostrarMensaje(String mensaje) {
+        javax.swing.JOptionPane.showMessageDialog(this, mensaje);
+    }
+
+    public void limpiarResumen() {
+        txtResumen.setText("");
+    }
+
+    public void agregarEventoCalcularMonto(java.awt.event.ActionListener listener) {
+        btnCalcularMonto.addActionListener(listener);
+    }
+
+    public void agregarEventoComprar(java.awt.event.ActionListener listener) {
+        btnComprar.addActionListener(listener);
+    }
+
+    public void agregarEventoVolver(java.awt.event.ActionListener listener) {
+        btnVolver.addActionListener(listener);
+    }
+    public void mostrarDatosTarjeta(int numero, String nombre, String fecha, int cvv, double saldo) {
+    txtNumeroTarjeta.setText(String.valueOf(numero));
+    txtNombreTarjeta.setText(nombre);
+    txtFechaTarjeta.setText(fecha);
+    txtCvv.setText(String.valueOf(cvv));
+    txtSaldo.setText(String.valueOf(saldo));
+}
+
+    public void bloquearDatosTarjeta() {
+        txtNumeroTarjeta.setEditable(false);
+        txtNombreTarjeta.setEditable(false);
+        txtFechaTarjeta.setEditable(false);
+        txtCvv.setEditable(false);
+        txtSaldo.setEditable(false);
+    }
+
+    public void habilitarDatosTarjeta() {
+        txtNumeroTarjeta.setEditable(true);
+        txtNombreTarjeta.setEditable(true);
+        txtFechaTarjeta.setEditable(true);
+        txtCvv.setEditable(true);
+        txtSaldo.setEditable(true);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,67 +106,176 @@ public class VistaCompra extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        lblTitulo = new javax.swing.JLabel();
+        lblConcierto = new javax.swing.JLabel();
+        lblZona = new javax.swing.JLabel();
+        cboZona = new javax.swing.JComboBox<>();
+        lblCantidad = new javax.swing.JLabel();
+        spnCantidad = new javax.swing.JSpinner();
+        lblMonto = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        btnCalcularMonto = new javax.swing.JButton();
         btnComprar = new javax.swing.JButton();
+        btnVolver = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtConsola = new javax.swing.JTextArea();
+        txtResumen = new javax.swing.JTextArea();
+        txtNumeroTarjeta = new javax.swing.JTextField();
+        txtNombreTarjeta = new javax.swing.JTextField();
+        txtSaldo = new javax.swing.JTextField();
+        txtCvv = new javax.swing.JTextField();
+        txtFechaTarjeta = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Sistema de Conciertos");
+        lblTitulo.setText("COMPRA DE ENTRADAS");
 
-        btnComprar.setText("Comprar Entrada");
+        lblConcierto.setText("CONCIERTO: ");
+
+        lblZona.setText("ZONA: ");
+
+        cboZona.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "VIP", "Preferencial", "General", "Tribuna" }));
+
+        lblCantidad.setText("CANTIDAD:");
+
+        spnCantidad.setModel(new javax.swing.SpinnerNumberModel(1, 1, 4, 1));
+
+        lblMonto.setText("MONTO:         S/ 0.0");
+
+        jLabel1.setText("DATOS DE TARJETA:");
+
+        jLabel2.setText("Número: ");
+
+        jLabel3.setText("Nombre:");
+
+        jLabel4.setText("Fecha:");
+
+        jLabel5.setText("CVV:");
+
+        jLabel6.setText("Saldo: ");
+
+        btnCalcularMonto.setText("Calcular Monto");
+
+        btnComprar.setText("Comprar");
         btnComprar.addActionListener(this::btnComprarActionPerformed);
 
-        txtConsola.setColumns(20);
-        txtConsola.setRows(5);
-        jScrollPane1.setViewportView(txtConsola);
+        btnVolver.setText("Volver");
+        btnVolver.addActionListener(this::btnVolverActionPerformed);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(662, 662, 662))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(123, 123, 123)
-                .addComponent(btnComprar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(354, 354, 354))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(40, 40, 40))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnComprar)
-                        .addGap(175, 175, 175))))
-        );
+        jLabel7.setText("Resumen:");
+
+        txtResumen.setColumns(20);
+        txtResumen.setRows(5);
+        jScrollPane1.setViewportView(txtResumen);
+
+        txtFechaTarjeta.addActionListener(this::txtFechaTarjetaActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1008, 1008, 1008))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblConcierto)
+                            .addComponent(lblMonto, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnCalcularMonto)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnComprar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnVolver))
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblCantidad)
+                                    .addComponent(lblZona))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cboZona, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(spnCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGap(62, 62, 62)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtNumeroTarjeta)
+                                    .addComponent(txtNombreTarjeta)
+                                    .addComponent(txtFechaTarjeta)
+                                    .addComponent(txtCvv)
+                                    .addComponent(txtSaldo)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(205, 205, 205)
+                        .addComponent(lblTitulo))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(79, 79, 79)
+                        .addComponent(jLabel1)))
+                .addGap(230, 230, 230))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(205, Short.MAX_VALUE))
+                .addGap(16, 16, 16)
+                .addComponent(lblTitulo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblConcierto)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblZona)
+                    .addComponent(cboZona, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCantidad)
+                    .addComponent(spnCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(lblMonto)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtNumeroTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtNombreTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(4, 4, 4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtFechaTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(txtCvv, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCalcularMonto)
+                    .addComponent(btnComprar)
+                    .addComponent(btnVolver))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -97,6 +284,14 @@ public class VistaCompra extends javax.swing.JFrame {
     private void btnComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComprarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnComprarActionPerformed
+
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnVolverActionPerformed
+
+    private void txtFechaTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaTarjetaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFechaTarjetaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -124,10 +319,29 @@ public class VistaCompra extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton btnComprar;
+    private javax.swing.JButton btnCalcularMonto;
+    private javax.swing.JButton btnComprar;
+    private javax.swing.JButton btnVolver;
+    private javax.swing.JComboBox<String> cboZona;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
-    public javax.swing.JTextArea txtConsola;
+    private javax.swing.JLabel lblCantidad;
+    private javax.swing.JLabel lblConcierto;
+    private javax.swing.JLabel lblMonto;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblZona;
+    private javax.swing.JSpinner spnCantidad;
+    private javax.swing.JTextField txtCvv;
+    private javax.swing.JTextField txtFechaTarjeta;
+    private javax.swing.JTextField txtNombreTarjeta;
+    private javax.swing.JTextField txtNumeroTarjeta;
+    private javax.swing.JTextArea txtResumen;
+    private javax.swing.JTextField txtSaldo;
     // End of variables declaration//GEN-END:variables
 }

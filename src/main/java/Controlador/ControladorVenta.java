@@ -1,62 +1,153 @@
 package Controlador;
 
-import Modelo.*;
-import Vista.VistaCompra;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import Modelo.Cliente;
+import Modelo.Concierto;
+import Modelo.Entrada;
+import Modelo.Tarjeta;
+import Modelo.Venta;
+import Modelo.Zona;
 
-public class ControladorVenta implements ActionListener {
-    
-    private VistaCompra vista;
-    private Zona zonaVip;
-    private Tarjeta tarjetaCliente;
+import Persistencia.ArchivoCliente;
+import Persistencia.ArchivoVenta;
 
-    public ControladorVenta(VistaCompra vista) {
-        this.vista = vista;
-        
-        this.zonaVip = new Zona("VIP", 50, 200.00);
-        this.zonaVip.generarEntradas();
-        
-        this.tarjetaCliente = new Tarjeta(1234, "Juan Perez", "12/25", 123, 500.00);
-        
-        this.vista.btnComprar.addActionListener(this);
+import java.util.ArrayList;
+import java.util.List;
+
+public class ControladorVenta {
+    private List<Venta> ventas;
+    private List<Cliente> clientes;
+
+    private ArchivoVenta archivoVenta;
+    private ArchivoCliente archivoCliente;
+
+    public ControladorVenta() {
+        this.ventas = new ArrayList<>();
+        this.clientes = null;
+        this.archivoVenta = new ArchivoVenta();
+        this.archivoCliente = new ArchivoCliente();
     }
 
-    public void iniciar() {
-        vista.setLocationRelativeTo(null);
-        vista.setVisible(true);
-        vista.txtConsola.append("Sistema iniciado. Zona VIP lista con 50 entradas\n");
-        vista.txtConsola.append("Tu saldo actual es: 500.00 soles\n");
-        vista.txtConsola.append("--------------------------------------------------\n");
+    public ControladorVenta(List<Cliente> clientes) {
+        this.ventas = new ArrayList<>();
+        this.clientes = clientes;
+        this.archivoVenta = new ArchivoVenta();
+        this.archivoCliente = new ArchivoCliente();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == vista.btnComprar) {
-            procesarCompra();
+    public Venta comprarEntradas(Cliente cliente, Concierto concierto, Zona zona, int cantidad) {
+        if (cliente == null) {
+            throw new IllegalArgumentException("El cliente no puede ser nulo.");
         }
+
+        if (concierto == null) {
+            throw new IllegalArgumentException("El concierto no puede ser nulo.");
+        }
+
+        if (zona == null) {
+            throw new IllegalArgumentException("La zona no puede ser nula.");
+        }
+
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad debe ser mayor que cero.");
+        }
+
+        if (cantidad > 4) {
+            throw new IllegalArgumentException("Solo puedes comprar hasta 4 entradas por venta.");
+        }
+
+        Tarjeta tarjeta = cliente.getTarjeta();
+
+        if (tarjeta == null) {
+            throw new IllegalStateException("El cliente no tiene una tarjeta registrada.");
+        }
+
+        Entrada[] entradasVendidas = zona.venderEntrada(cantidad);
+
+        Venta venta = new Venta();
+        venta.setTarjeta(tarjeta);
+        venta.setDniCliente(cliente.getDni());
+        venta.setNombreConcierto(concierto.getNombre());
+        venta.setNombreZona(zona.getNombre());
+
+        for (int i = 0; i < entradasVendidas.length; i++) {
+            venta.agregarEntrada(entradasVendidas[i], zona.getPrecio());
+        }
+
+        boolean pagoCorrecto = tarjeta.procesarCobro(venta.getMonto());
+
+        if (!pagoCorrecto) {
+            venta.anular();
+            throw new IllegalStateException("No se pudo procesar el pago.");
+        }
+
+        cliente.agregarVenta(venta);
+        ventas.add(venta);
+
+        guardarCambios();
+
+        return venta;
     }
 
-    private void procesarCompra() {
-        try {
-            Entrada nuevaEntrada = zonaVip.venderUnaEntrada();
-            
-            Venta venta = new Venta();
-            venta.agregarEntrada(nuevaEntrada, zonaVip.getPrecio());
-            
-            vista.txtConsola.append("Intentando cobrar: $" + venta.getMonto() + "...\n");
-            
-            boolean cobroExitoso = tarjetaCliente.procesarCobro(venta.getMonto());
-            
-            if (cobroExitoso) {
-                vista.txtConsola.append("¡Compra exitosa! Tienes tu entrada\n\n");
-            } else {
-                vista.txtConsola.append("Error: Tarjeta rechazada o fondos insuficientes\n\n");
-                nuevaEntrada.liberar();
-            }
-            
-        } catch (Exception ex) {
-            vista.txtConsola.append("Problema: " + ex.getMessage() + "\n\n");
+    public Venta comprarEntradas(Cliente cliente, Zona zona, int cantidad) {
+        throw new IllegalArgumentException("Para persistencia debes enviar también el concierto.");
+    }
+
+    public boolean anularVenta(Cliente cliente, Venta venta) {
+        if (cliente == null) {
+            return false;
         }
+
+        if (venta == null) {
+            return false;
+        }
+
+        boolean anulada = cliente.anularVenta(venta);
+
+        if (anulada) {
+            ventas.remove(venta);
+            guardarCambios();
+        }
+
+        return anulada;
+    }
+
+    public boolean cargarVentas(List<Concierto> conciertos) {
+        if (clientes == null) {
+            return false;
+        }
+
+        ventas = archivoVenta.cargarVentas(clientes, conciertos);
+        return true;
+    }
+
+    private boolean guardarCambios() {
+        if (clientes == null) {
+            return true;
+        }
+
+        boolean clientesGuardados = archivoCliente.guardarClientes(clientes);
+        boolean ventasGuardadas = archivoVenta.guardarVentas(clientes);
+
+        return clientesGuardados && ventasGuardadas;
+    }
+
+    public List<Venta> listarVentas() {
+        return ventas;
+    }
+
+    public double calcularMonto(Zona zona, int cantidad) {
+        if (zona == null) {
+            return 0.0;
+        }
+
+        if (cantidad <= 0) {
+            return 0.0;
+        }
+
+        if (cantidad > 4) {
+            return 0.0;
+        }
+
+        return zona.getPrecio() * cantidad;
     }
 }

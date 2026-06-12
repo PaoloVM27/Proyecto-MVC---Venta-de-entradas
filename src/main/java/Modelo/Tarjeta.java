@@ -6,7 +6,7 @@ public class Tarjeta {
     private String fecha;
     private int cvv;
     private double saldo;
-    
+
     public Tarjeta(int numero, String nombre, String fecha, int cvv, double saldo) {
         this.numero = numero;
         this.nombre = nombre;
@@ -16,30 +16,67 @@ public class Tarjeta {
     }
 
     public boolean validarDatos() {
-        if (this.cvv > 99 && this.fecha != null && !this.fecha.isEmpty()) {
-            System.out.println("Tarjeta válida");
-            return true;
+        if (numero <= 0) {
+            return false;
         }
-        System.out.println("Datos de tarjeta incorrectos");
-        return false;
+
+        if (nombre == null || nombre.isEmpty()) {
+            return false;
+        }
+
+        if (fecha == null || fecha.isEmpty()) {
+            return false;
+        }
+
+        if (cvv < 100 || cvv > 999) {
+            return false;
+        }
+
+        if (saldo < 0) {
+            return false;
+        }
+
+        return true;
     }
-    
+
     public boolean verificarFondo(double monto) {
-        if (this.saldo >= monto) {
-            System.out.println("Hay fondos suficientes.");
-            return true;
+        if (monto <= 0) {
+            return false;
         }
-        System.out.println("Saldo insuficiente. Tienes: " + this.saldo + ", y necesitas: " + monto);
-        return false;
+
+        return saldo >= monto;
     }
-    
+
     public boolean procesarCobro(double monto) {
-        if (validarDatos() && verificarFondo(monto)) {
-            this.saldo = this.saldo - monto;
-            System.out.println("Cobro exitoso. Tu nuevo saldo es: " + this.saldo);
-            return true;
+        if (!validarDatos()) {
+            return false;
         }
-        System.out.println("El cobro falló");
-        return false;
+
+        if (!verificarFondo(monto)) {
+            return false;
+        }
+
+        saldo = saldo - monto;
+        return true;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public int getCvv() {
+        return cvv;
+    }
+
+    public double getSaldo() {
+        return saldo;
     }
 }
