@@ -1,14 +1,17 @@
 package Main;
 
-import Vista.VistaCompra;
-import Controlador.ControladorVenta;
+import Controlador.ControladorAutenticacion;
+import Controlador.ControladorLogin;
+import Vista.VistaLogin;
 
 public class Main {
     public static void main(String[] args) {
-        VistaCompra vista = new VistaCompra();
-        
-        ControladorVenta controlador = new ControladorVenta(vista);
-        
-        controlador.iniciar();
+        ControladorAutenticacion auth = new ControladorAutenticacion();
+
+        VistaLogin vistaLogin = new VistaLogin();
+
+        ControladorLogin controladorLogin = new ControladorLogin(vistaLogin, auth);
+
+        controladorLogin.iniciar();
     }
 }

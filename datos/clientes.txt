@@ -1,0 +1,3 @@
+Luis;Torres;11112222;abcd;3;true;777777;Luis Torres;12/27;123;200.0
+Jose;Janampa;60919354;fiesta12sz;0;false
+Paolo;VM;60776488;123456789;1;true;43567897;Paolo;12/30;933;0.0
