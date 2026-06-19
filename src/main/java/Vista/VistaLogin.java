@@ -16,35 +16,7 @@ public class VistaLogin extends javax.swing.JFrame {
     public VistaLogin() {
         initComponents();
     }
-    public String getDni() {
-    return txtDni.getText().trim();
-    }
 
-    public String getContrasena() {
-        return new String(txtContrasena.getPassword()).trim();
-    }
-
-    public String getTipoUsuario() {
-        return cboTipoUsuario.getSelectedItem().toString().trim();
-    }
-
-    public void limpiarCampos() {
-        txtDni.setText("");
-        txtContrasena.setText("");
-        cboTipoUsuario.setSelectedIndex(0);
-    }
-
-    public void mostrarMensaje(String mensaje) {
-        javax.swing.JOptionPane.showMessageDialog(this, mensaje);
-    }
-
-    public void agregarEventoIngresar(java.awt.event.ActionListener listener) {
-        btnIngresar.addActionListener(listener);
-    }
-
-    public void agregarEventoRegistrarse(java.awt.event.ActionListener listener) {
-        btnRegistrarse.addActionListener(listener);
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -179,13 +151,13 @@ public class VistaLogin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnIngresar;
-    private javax.swing.JButton btnRegistrarse;
-    private javax.swing.JComboBox<String> cboTipoUsuario;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPasswordField txtContrasena;
-    private javax.swing.JTextField txtDni;
+    public javax.swing.JButton btnIngresar;
+    public javax.swing.JButton btnRegistrarse;
+    public javax.swing.JComboBox<String> cboTipoUsuario;
+    public javax.swing.JLabel jLabel1;
+    public javax.swing.JLabel jLabel2;
+    public javax.swing.JLabel jLabel3;
+    public javax.swing.JPasswordField txtContrasena;
+    public javax.swing.JTextField txtDni;
     // End of variables declaration//GEN-END:variables
 }

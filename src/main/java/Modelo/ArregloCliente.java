@@ -1,31 +1,34 @@
-package Controlador;
+package Modelo;
 
 import Modelo.Cliente;
 import Modelo.Tarjeta;
 import Modelo.Venta;
 import Persistencia.ArchivoCliente;
-import java.util.List;
 
-public class ControladorCliente {
+public class ArregloCliente {
     private Cliente clienteActual;
-    private List<Cliente> clientes;
+    private Cliente[] clientes;
+    private int numClientes;
     private ArchivoCliente archivoCliente;
 
-    public ControladorCliente() {
+    public ArregloCliente() {
         this.clienteActual = null;
         this.clientes = null;
+        this.numClientes = 0;
         this.archivoCliente = new ArchivoCliente();
     }
 
-    public ControladorCliente(Cliente clienteActual) {
+    public ArregloCliente(Cliente clienteActual) {
         this.clienteActual = clienteActual;
         this.clientes = null;
+        this.numClientes = 0;
         this.archivoCliente = new ArchivoCliente();
     }
 
-    public ControladorCliente(Cliente clienteActual, List<Cliente> clientes) {
+    public ArregloCliente(Cliente clienteActual, Cliente[] clientes, int numClientes) {
         this.clienteActual = clienteActual;
         this.clientes = clientes;
+        this.numClientes = numClientes;
         this.archivoCliente = new ArchivoCliente();
     }
 
@@ -73,7 +76,7 @@ public class ControladorCliente {
             return true;
         }
 
-        return archivoCliente.guardarClientes(clientes);
+        return archivoCliente.guardarClientes(clientes, numClientes);
     }
 
     public Tarjeta obtenerTarjeta() {
@@ -90,28 +93,6 @@ public class ControladorCliente {
         }
 
         return clienteActual.getTarjeta() != null;
-    }
-
-    public List<Venta> obtenerVentas() {
-        if (clienteActual == null) {
-            return null;
-        }
-
-        return clienteActual.getVentas();
-    }
-
-    public boolean anularVenta(Venta venta) {
-        if (clienteActual == null) {
-            return false;
-        }
-
-        boolean anulada = clienteActual.anularVenta(venta);
-
-        if (anulada) {
-            guardarCambios();
-        }
-
-        return anulada;
     }
 
     public int obtenerPuntos() {

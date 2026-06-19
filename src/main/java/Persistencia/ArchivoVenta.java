@@ -12,9 +12,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class ArchivoVenta {
     private String ruta;
@@ -32,14 +30,15 @@ public class ArchivoVenta {
         }
     }
 
-    public boolean guardarVentas(List<Cliente> clientes) {
+    public boolean guardarVentas(Venta[] ventas, int numVentas) {
         try {
             PrintWriter escritor = new PrintWriter(new FileWriter(ruta));
 
-            for (Cliente cliente : clientes) {
-                for (Venta venta : cliente.getVentas()) {
+            for (int i = 0; i < numVentas; i++) {
+                Venta venta = ventas[i];
+                if (venta != null) {
                     escritor.println(
-                            cliente.getDni() + ";" +
+                            venta.getDniCliente() + ";" +
                             venta.getNombreConcierto() + ";" +
                             venta.getNombreZona() + ";" +
                             venta.getFecha().getTime() + ";" +
@@ -59,17 +58,19 @@ public class ArchivoVenta {
         }
     }
 
-    public List<Venta> cargarVentas(List<Cliente> clientes, List<Concierto> conciertos) {
-        List<Venta> ventasCargadas = new ArrayList<>();
+    public Venta[] cargarVentas(Cliente[] clientes, int numClientes, Concierto[] conciertos, int numConciertos) {
+        Venta[] ventasCargadas = new Venta[10];
+        int numVentas = 0;
 
         try {
             File archivo = new File(ruta);
 
             if (!archivo.exists()) {
-                return ventasCargadas;
+                return new Venta[0];
             }
 
-            limpiarVentasClientes(clientes);
+            // No limpiamos los conciertos aquí, ya que limpiar sus arreglos puede ser complejo.
+            // Es mejor asumir que se cargan las ventas en conciertos vacíos o manejarlos en el cargador.
 
             BufferedReader lector = new BufferedReader(new FileReader(ruta));
             String linea;
@@ -85,8 +86,8 @@ public class ArchivoVenta {
                     double monto = Double.parseDouble(datos[4]);
                     String numerosEntradas = datos[6];
 
-                    Cliente cliente = buscarCliente(clientes, dniCliente);
-                    Concierto concierto = buscarConcierto(conciertos, nombreConcierto);
+                    Cliente cliente = buscarCliente(clientes, numClientes, dniCliente);
+                    Concierto concierto = buscarConcierto(conciertos, numConciertos, nombreConcierto);
 
                     if (cliente != null && concierto != null) {
                         Zona zona = concierto.buscarZona(nombreZona);
@@ -114,8 +115,18 @@ public class ArchivoVenta {
                             venta.setMonto(monto);
 
                             if (venta.getCantidadEntradas() > 0) {
-                                cliente.agregarVenta(venta);
-                                ventasCargadas.add(venta);
+                                concierto.agregarVenta(venta);
+                                
+                                if (numVentas >= ventasCargadas.length) {
+                                    Venta[] nuevoArreglo = new Venta[ventasCargadas.length * 2];
+                                    for (int i = 0; i < numVentas; i++) {
+                                        nuevoArreglo[i] = ventasCargadas[i];
+                                    }
+                                    ventasCargadas = nuevoArreglo;
+                                }
+                                
+                                ventasCargadas[numVentas] = venta;
+                                numVentas++;
                             }
                         }
                     }
@@ -125,20 +136,29 @@ public class ArchivoVenta {
             lector.close();
 
         } catch (Exception e) {
-            return ventasCargadas;
+            // Retorna las cargadas hasta el error
         }
 
-        return ventasCargadas;
+        Venta[] resultado = new Venta[numVentas];
+        for (int i = 0; i < numVentas; i++) {
+            resultado[i] = ventasCargadas[i];
+        }
+        return resultado;
     }
 
     private String obtenerNumerosEntradas(Venta venta) {
         String resultado = "";
+        
+        Entrada[] entradas = venta.getEntradas();
+        int numEntradas = venta.getCantidadEntradas();
 
-        for (int i = 0; i < venta.getEntradas().size(); i++) {
-            resultado += venta.getEntradas().get(i).getNumero();
+        for (int i = 0; i < numEntradas; i++) {
+            if (entradas[i] != null) {
+                resultado += entradas[i].getNumero();
 
-            if (i < venta.getEntradas().size() - 1) {
-                resultado += ",";
+                if (i < numEntradas - 1) {
+                    resultado += ",";
+                }
             }
         }
 
@@ -155,27 +175,20 @@ public class ArchivoVenta {
         return String.valueOf(tarjeta.getNumero());
     }
 
-    private void limpiarVentasClientes(List<Cliente> clientes) {
-        for (Cliente cliente : clientes) {
-            cliente.getVentas().clear();
-            cliente.setPuntos(0);
-        }
-    }
-
-    private Cliente buscarCliente(List<Cliente> clientes, String dni) {
-        for (Cliente cliente : clientes) {
-            if (cliente.getDni().equals(dni)) {
-                return cliente;
+    private Cliente buscarCliente(Cliente[] clientes, int numClientes, String dni) {
+        for (int i = 0; i < numClientes; i++) {
+            if (clientes[i].getDni().equals(dni)) {
+                return clientes[i];
             }
         }
 
         return null;
     }
 
-    private Concierto buscarConcierto(List<Concierto> conciertos, String nombre) {
-        for (Concierto concierto : conciertos) {
-            if (concierto.getNombre().equalsIgnoreCase(nombre)) {
-                return concierto;
+    private Concierto buscarConcierto(Concierto[] conciertos, int numConciertos, String nombre) {
+        for (int i = 0; i < numConciertos; i++) {
+            if (conciertos[i].getNombre().equalsIgnoreCase(nombre)) {
+                return conciertos[i];
             }
         }
 
@@ -186,7 +199,7 @@ public class ArchivoVenta {
         Entrada[] entradas = zona.mostrarEntrada();
 
         for (Entrada entrada : entradas) {
-            if (entrada.getNumero() == numero) {
+            if (entrada != null && entrada.getNumero() == numero) {
                 return entrada;
             }
         }

@@ -16,25 +16,7 @@ public class VistaMenuCliente extends javax.swing.JFrame {
     public VistaMenuCliente() {
         initComponents();
     }
-    public void setNombreCliente(String nombre) {
-    lblBienvenida.setText("Bienvenido, " + nombre);
-    }
 
-    public void mostrarMensaje(String mensaje) {
-        javax.swing.JOptionPane.showMessageDialog(this, mensaje);
-    }
-
-    public void agregarEventoComprar(java.awt.event.ActionListener listener) {
-        btnComprar.addActionListener(listener);
-    }
-
-    public void agregarEventoMisEntradas(java.awt.event.ActionListener listener) {
-        btnMisEntradas.addActionListener(listener);
-    }
-
-    public void agregarEventoCerrarSesion(java.awt.event.ActionListener listener) {
-        btnCerrarSesion.addActionListener(listener);
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -157,11 +139,11 @@ public class VistaMenuCliente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCerrarSesion;
-    private javax.swing.JToggleButton btnComprar;
-    private javax.swing.JButton btnMisEntradas;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JToggleButton jToggleButton2;
-    private javax.swing.JLabel lblBienvenida;
+    public javax.swing.JButton btnCerrarSesion;
+    public javax.swing.JToggleButton btnComprar;
+    public javax.swing.JButton btnMisEntradas;
+    public javax.swing.JLabel jLabel1;
+    public javax.swing.JToggleButton jToggleButton2;
+    public javax.swing.JLabel lblBienvenida;
     // End of variables declaration//GEN-END:variables
 }

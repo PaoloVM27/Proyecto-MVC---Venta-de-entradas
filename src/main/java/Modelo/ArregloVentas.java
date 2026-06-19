@@ -1,4 +1,4 @@
-package Controlador;
+package Modelo;
 
 import Modelo.Cliente;
 import Modelo.Concierto;
@@ -10,28 +10,40 @@ import Modelo.Zona;
 import Persistencia.ArchivoCliente;
 import Persistencia.ArchivoVenta;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ControladorVenta {
-    private List<Venta> ventas;
-    private List<Cliente> clientes;
+public class ArregloVentas {
+    private Venta[] ventas;
+    private int numVentas;
+    
+    private Cliente[] clientes;
+    private int numClientes;
 
     private ArchivoVenta archivoVenta;
     private ArchivoCliente archivoCliente;
 
-    public ControladorVenta() {
-        this.ventas = new ArrayList<>();
+    public ArregloVentas() {
+        this.ventas = new Venta[10];
+        this.numVentas = 0;
         this.clientes = null;
+        this.numClientes = 0;
         this.archivoVenta = new ArchivoVenta();
         this.archivoCliente = new ArchivoCliente();
     }
 
-    public ControladorVenta(List<Cliente> clientes) {
-        this.ventas = new ArrayList<>();
+    public ArregloVentas(Cliente[] clientes, int numClientes) {
+        this.ventas = new Venta[10];
+        this.numVentas = 0;
         this.clientes = clientes;
+        this.numClientes = numClientes;
         this.archivoVenta = new ArchivoVenta();
         this.archivoCliente = new ArchivoCliente();
+    }
+    
+    private void redimensionarVentas() {
+        Venta[] nuevoArreglo = new Venta[ventas.length * 2];
+        for (int i = 0; i < numVentas; i++) {
+            nuevoArreglo[i] = ventas[i];
+        }
+        ventas = nuevoArreglo;
     }
 
     public Venta comprarEntradas(Cliente cliente, Concierto concierto, Zona zona, int cantidad) {
@@ -70,7 +82,9 @@ public class ControladorVenta {
         venta.setNombreZona(zona.getNombre());
 
         for (int i = 0; i < entradasVendidas.length; i++) {
-            venta.agregarEntrada(entradasVendidas[i], zona.getPrecio());
+            if (entradasVendidas[i] != null) {
+                venta.agregarEntrada(entradasVendidas[i], zona.getPrecio());
+            }
         }
 
         boolean pagoCorrecto = tarjeta.procesarCobro(venta.getMonto());
@@ -80,8 +94,15 @@ public class ControladorVenta {
             throw new IllegalStateException("No se pudo procesar el pago.");
         }
 
-        cliente.agregarVenta(venta);
-        ventas.add(venta);
+        concierto.agregarVenta(venta);
+        
+        if (numVentas >= ventas.length) {
+            redimensionarVentas();
+        }
+        ventas[numVentas] = venta;
+        numVentas++;
+
+        cliente.setPuntos(cliente.getPuntos() + venta.getCantidadEntradas());
 
         guardarCambios();
 
@@ -92,7 +113,11 @@ public class ControladorVenta {
         throw new IllegalArgumentException("Para persistencia debes enviar también el concierto.");
     }
 
-    public boolean anularVenta(Cliente cliente, Venta venta) {
+    public boolean anularVenta(Concierto concierto, Cliente cliente, Venta venta) {
+        if (concierto == null) {
+            return false;
+        }
+
         if (cliente == null) {
             return false;
         }
@@ -101,22 +126,46 @@ public class ControladorVenta {
             return false;
         }
 
-        boolean anulada = cliente.anularVenta(venta);
+        int puntosARestar = venta.getCantidadEntradas();
+        boolean anulada = concierto.anularVenta(venta);
 
         if (anulada) {
-            ventas.remove(venta);
+            // Eliminar venta del arreglo
+            for (int i = 0; i < numVentas; i++) {
+                if (ventas[i] == venta) {
+                    for (int j = i; j < numVentas - 1; j++) {
+                        ventas[j] = ventas[j + 1];
+                    }
+                    ventas[numVentas - 1] = null;
+                    numVentas--;
+                    break;
+                }
+            }
+            
+            int nuevosPuntos = cliente.getPuntos() - puntosARestar;
+            cliente.setPuntos(nuevosPuntos < 0 ? 0 : nuevosPuntos);
             guardarCambios();
         }
 
         return anulada;
     }
 
-    public boolean cargarVentas(List<Concierto> conciertos) {
+    public boolean cargarVentas(Concierto[] conciertos, int numConciertos) {
         if (clientes == null) {
             return false;
         }
 
-        ventas = archivoVenta.cargarVentas(clientes, conciertos);
+        Venta[] cargadas = archivoVenta.cargarVentas(clientes, numClientes, conciertos, numConciertos);
+        if (cargadas != null) {
+            ventas = new Venta[Math.max(10, cargadas.length * 2)];
+            numVentas = 0;
+            for (int i = 0; i < cargadas.length; i++) {
+                if (cargadas[i] != null) {
+                    ventas[numVentas] = cargadas[i];
+                    numVentas++;
+                }
+            }
+        }
         return true;
     }
 
@@ -125,14 +174,18 @@ public class ControladorVenta {
             return true;
         }
 
-        boolean clientesGuardados = archivoCliente.guardarClientes(clientes);
-        boolean ventasGuardadas = archivoVenta.guardarVentas(clientes);
+        boolean clientesGuardados = archivoCliente.guardarClientes(clientes, numClientes);
+        boolean ventasGuardadas = archivoVenta.guardarVentas(ventas, numVentas);
 
         return clientesGuardados && ventasGuardadas;
     }
 
-    public List<Venta> listarVentas() {
-        return ventas;
+    public Venta[] listarVentas() {
+        Venta[] resultado = new Venta[numVentas];
+        for (int i = 0; i < numVentas; i++) {
+            resultado[i] = ventas[i];
+        }
+        return resultado;
     }
 
     public double calcularMonto(Zona zona, int cantidad) {

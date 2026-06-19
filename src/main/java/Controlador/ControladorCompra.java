@@ -11,38 +11,39 @@ import Vista.VistaMenuCliente;
 public class ControladorCompra {
     private VistaCompra vistaCompra;
     private VistaMenuCliente vistaMenuCliente;
-    private ControladorAutenticacion auth;
+    private Servicios.Autenticacion auth;
 
-    private ControladorConcierto controladorConcierto;
-    private ControladorVenta controladorVenta;
-    private ControladorCliente controladorCliente;
+    private Modelo.ArregloConcierto arregloConcierto;
+    private Modelo.ArregloVentas arregloVentas;
+    private Modelo.ArregloCliente arregloCliente;
 
     private Concierto concierto;
 
-    public ControladorCompra(VistaCompra vistaCompra, VistaMenuCliente vistaMenuCliente, ControladorAutenticacion auth) {
+    public ControladorCompra(VistaCompra vistaCompra, VistaMenuCliente vistaMenuCliente, Servicios.Autenticacion auth) {
         this.vistaCompra = vistaCompra;
         this.vistaMenuCliente = vistaMenuCliente;
         this.auth = auth;
 
-        this.controladorConcierto = new ControladorConcierto();
-        this.controladorVenta = new ControladorVenta(auth.getClientes());
-        this.controladorCliente = new ControladorCliente(auth.getClienteActual(), auth.getClientes());
+        this.arregloConcierto = new Modelo.ArregloConcierto();
+        this.arregloVentas = new Modelo.ArregloVentas(auth.getClientes(), auth.getNumClientes());
+        this.arregloCliente = new Modelo.ArregloCliente(auth.getClienteActual(), auth.getClientes(), auth.getNumClientes());
 
-        this.vistaCompra.agregarEventoCalcularMonto(e -> calcularMonto());
-        this.vistaCompra.agregarEventoComprar(e -> comprarEntradas());
-        this.vistaCompra.agregarEventoVolver(e -> volverMenu());
+        this.vistaCompra.btnCalcularMonto.addActionListener(e -> calcularMonto());
+        this.vistaCompra.btnComprar.addActionListener(e -> comprarEntradas());
+        this.vistaCompra.btnVolver.addActionListener(e -> volverMenu());
     }
 
     public void iniciar() {
-        concierto = controladorConcierto.buscarConcierto("Aniversario UNMSM");
+        concierto = arregloConcierto.buscarConcierto("Aniversario UNMSM");
 
         if (concierto == null) {
-            vistaCompra.mostrarMensaje("No se encontró el concierto Aniversario UNMSM.");
+            javax.swing.JOptionPane.showMessageDialog(vistaCompra, "No se encontró el concierto Aniversario UNMSM.");
             volverMenu();
             return;
         }
 
-        controladorVenta.cargarVentas(controladorConcierto.listarConciertos());
+        Concierto[] listaConciertos = arregloConcierto.listarConciertos();
+        arregloVentas.cargarVentas(listaConciertos, listaConciertos.length);
 
         cargarTarjetaCliente();
 
@@ -56,31 +57,37 @@ public class ControladorCompra {
         Cliente cliente = auth.getClienteActual();
 
         if (cliente == null) {
-            vistaCompra.mostrarMensaje("No hay cliente logueado.");
+            javax.swing.JOptionPane.showMessageDialog(vistaCompra, "No hay cliente logueado.");
             return;
         }
 
         Tarjeta tarjeta = cliente.getTarjeta();
 
         if (tarjeta != null) {
-            vistaCompra.mostrarDatosTarjeta(
-                    tarjeta.getNumero(),
-                    tarjeta.getNombre(),
-                    tarjeta.getFecha(),
-                    tarjeta.getCvv(),
-                    tarjeta.getSaldo()
-            );
+            vistaCompra.txtNumeroTarjeta.setText(String.valueOf(tarjeta.getNumero()));
+            vistaCompra.txtNombreTarjeta.setText(tarjeta.getNombre());
+            vistaCompra.txtFechaTarjeta.setText(tarjeta.getFecha());
+            vistaCompra.txtCvv.setText(String.valueOf(tarjeta.getCvv()));
+            vistaCompra.txtSaldo.setText(String.valueOf(tarjeta.getSaldo()));
 
-            vistaCompra.bloquearDatosTarjeta();
-            vistaCompra.setResumen("Tarjeta cargada correctamente.\nPuedes comprar tus entradas.");
+            vistaCompra.txtNumeroTarjeta.setEditable(false);
+            vistaCompra.txtNombreTarjeta.setEditable(false);
+            vistaCompra.txtFechaTarjeta.setEditable(false);
+            vistaCompra.txtCvv.setEditable(false);
+            vistaCompra.txtSaldo.setEditable(false);
+            vistaCompra.txtResumen.setText("Tarjeta cargada correctamente.\nPuedes comprar tus entradas.");
         } else {
-            vistaCompra.habilitarDatosTarjeta();
-            vistaCompra.setResumen("No tienes tarjeta registrada.\nIngresa los datos de tu tarjeta para comprar.");
+            vistaCompra.txtNumeroTarjeta.setEditable(true);
+            vistaCompra.txtNombreTarjeta.setEditable(true);
+            vistaCompra.txtFechaTarjeta.setEditable(true);
+            vistaCompra.txtCvv.setEditable(true);
+            vistaCompra.txtSaldo.setEditable(true);
+            vistaCompra.txtResumen.setText("No tienes tarjeta registrada.\nIngresa los datos de tu tarjeta para comprar.");
         }
     }
 
     private Zona obtenerZonaSeleccionada() {
-        String nombreZona = vistaCompra.getZonaSeleccionada();
+        String nombreZona = vistaCompra.cboZona.getSelectedItem().toString();
 
         if (concierto == null) {
             return null;
@@ -93,14 +100,14 @@ public class ControladorCompra {
         Zona zona = obtenerZonaSeleccionada();
 
         if (zona == null) {
-            vistaCompra.mostrarMensaje("Zona no encontrada.");
+            javax.swing.JOptionPane.showMessageDialog(vistaCompra, "Zona no encontrada.");
             return;
         }
 
-        int cantidad = vistaCompra.getCantidad();
-        double monto = controladorVenta.calcularMonto(zona, cantidad);
+        int cantidad = Integer.parseInt(vistaCompra.spnCantidad.getValue().toString());
+        double monto = arregloVentas.calcularMonto(zona, cantidad);
 
-        vistaCompra.setMonto(monto);
+        vistaCompra.lblMonto.setText("Monto: S/ " + monto);
 
         String resumen = "";
         resumen += "Zona seleccionada: " + zona.getNombre() + "\n";
@@ -109,7 +116,7 @@ public class ControladorCompra {
         resumen += "Monto total: S/ " + monto + "\n";
         resumen += "Entradas disponibles: " + zona.contarDisponibles() + "\n";
 
-        vistaCompra.setResumen(resumen);
+        vistaCompra.txtResumen.setText(resumen);
     }
 
     private void comprarEntradas() {
@@ -117,14 +124,14 @@ public class ControladorCompra {
             Cliente cliente = auth.getClienteActual();
 
             if (cliente == null) {
-                vistaCompra.mostrarMensaje("No hay cliente logueado.");
+                javax.swing.JOptionPane.showMessageDialog(vistaCompra, "No hay cliente logueado.");
                 return;
             }
 
             Zona zona = obtenerZonaSeleccionada();
 
             if (zona == null) {
-                vistaCompra.mostrarMensaje("Zona no encontrada.");
+                javax.swing.JOptionPane.showMessageDialog(vistaCompra, "Zona no encontrada.");
                 return;
             }
 
@@ -136,9 +143,9 @@ public class ControladorCompra {
                 }
             }
 
-            int cantidad = vistaCompra.getCantidad();
+            int cantidad = Integer.parseInt(vistaCompra.spnCantidad.getValue().toString());
 
-            Venta venta = controladorVenta.comprarEntradas(
+            Venta venta = arregloVentas.comprarEntradas(
                     cliente,
                     concierto,
                     zona,
@@ -147,15 +154,17 @@ public class ControladorCompra {
 
             Tarjeta tarjeta = cliente.getTarjeta();
 
-            vistaCompra.mostrarDatosTarjeta(
-                    tarjeta.getNumero(),
-                    tarjeta.getNombre(),
-                    tarjeta.getFecha(),
-                    tarjeta.getCvv(),
-                    tarjeta.getSaldo()
-            );
+            vistaCompra.txtNumeroTarjeta.setText(String.valueOf(tarjeta.getNumero()));
+            vistaCompra.txtNombreTarjeta.setText(tarjeta.getNombre());
+            vistaCompra.txtFechaTarjeta.setText(tarjeta.getFecha());
+            vistaCompra.txtCvv.setText(String.valueOf(tarjeta.getCvv()));
+            vistaCompra.txtSaldo.setText(String.valueOf(tarjeta.getSaldo()));
 
-            vistaCompra.bloquearDatosTarjeta();
+            vistaCompra.txtNumeroTarjeta.setEditable(false);
+            vistaCompra.txtNombreTarjeta.setEditable(false);
+            vistaCompra.txtFechaTarjeta.setEditable(false);
+            vistaCompra.txtCvv.setEditable(false);
+            vistaCompra.txtSaldo.setEditable(false);
 
             String resumen = "";
             resumen += "COMPRA REALIZADA CORRECTAMENTE\n";
@@ -167,26 +176,26 @@ public class ControladorCompra {
             resumen += "Saldo restante: S/ " + tarjeta.getSaldo() + "\n";
             resumen += "Entradas disponibles en zona: " + zona.contarDisponibles() + "\n";
 
-            vistaCompra.setResumen(resumen);
-            vistaCompra.setMonto(venta.getMonto());
+            vistaCompra.txtResumen.setText(resumen);
+            vistaCompra.lblMonto.setText("Monto: S/ " + venta.getMonto());
 
-            vistaCompra.mostrarMensaje("Compra realizada correctamente.");
+            javax.swing.JOptionPane.showMessageDialog(vistaCompra, "Compra realizada correctamente.");
 
         } catch (NumberFormatException e) {
-            vistaCompra.mostrarMensaje("Revisa los datos numéricos de la tarjeta, CVV o saldo.");
+            javax.swing.JOptionPane.showMessageDialog(vistaCompra, "Revisa los datos numéricos de la tarjeta, CVV o saldo.");
         } catch (Exception e) {
-            vistaCompra.mostrarMensaje(e.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(vistaCompra, e.getMessage());
         }
     }
 
     private boolean registrarTarjetaDesdeVista() {
-        int numero = vistaCompra.getNumeroTarjeta();
-        String nombre = vistaCompra.getNombreTarjeta();
-        String fecha = vistaCompra.getFechaTarjeta();
-        int cvv = vistaCompra.getCvv();
-        double saldo = vistaCompra.getSaldo();
+        int numero = Integer.parseInt(vistaCompra.txtNumeroTarjeta.getText().trim());
+        String nombre = vistaCompra.txtNombreTarjeta.getText().trim();
+        String fecha = vistaCompra.txtFechaTarjeta.getText().trim();
+        int cvv = Integer.parseInt(vistaCompra.txtCvv.getText().trim());
+        double saldo = Double.parseDouble(vistaCompra.txtSaldo.getText().trim());
 
-        boolean registrada = controladorCliente.registrarTarjeta(
+        boolean registrada = arregloCliente.registrarTarjeta(
                 numero,
                 nombre,
                 fecha,
@@ -195,7 +204,7 @@ public class ControladorCompra {
         );
 
         if (!registrada) {
-            vistaCompra.mostrarMensaje("No se pudo registrar la tarjeta. Revisa los datos.");
+            javax.swing.JOptionPane.showMessageDialog(vistaCompra, "No se pudo registrar la tarjeta. Revisa los datos.");
             return false;
         }
 

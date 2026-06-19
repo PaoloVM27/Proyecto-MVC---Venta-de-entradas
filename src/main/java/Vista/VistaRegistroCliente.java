@@ -9,50 +9,12 @@ package Vista;
  * @author vayit
  */
 public class VistaRegistroCliente extends javax.swing.JFrame {
+
     /**
      * Creates new form VistaMenuCliente
      */
     public VistaRegistroCliente() {
         initComponents();
-    }
-    public String getNombres() {
-    return txtNombres.getText().trim();
-    }
-
-    public String getApellidos() {
-        return txtApellidos.getText().trim();
-    }
-
-    public String getDni() {
-        return txtDni.getText().trim();
-    }
-
-    public String getContrasena() {
-        return new String(txtContrasena.getPassword()).trim();
-    }
-
-    public String getConfirmarContrasena() {
-        return new String(txtConfirmarContrasena.getPassword()).trim();
-    }
-
-    public void limpiarCampos() {
-        txtNombres.setText("");
-        txtApellidos.setText("");
-        txtDni.setText("");
-        txtContrasena.setText("");
-        txtConfirmarContrasena.setText("");
-    }
-
-    public void mostrarMensaje(String mensaje) {
-        javax.swing.JOptionPane.showMessageDialog(this, mensaje);
-    }
-
-    public void agregarEventoRegistrar(java.awt.event.ActionListener listener) {
-        btnRegistrar.addActionListener(listener);
-    }
-
-    public void agregarEventoVolver(java.awt.event.ActionListener listener) {
-        btnVolver.addActionListener(listener);
     }
 
     /**
@@ -219,18 +181,18 @@ public class VistaRegistroCliente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnRegistrar;
-    private javax.swing.JButton btnVolver;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JTextField txtApellidos;
-    private javax.swing.JPasswordField txtConfirmarContrasena;
-    private javax.swing.JPasswordField txtContrasena;
-    private javax.swing.JTextField txtDni;
-    private javax.swing.JTextField txtNombres;
+    public javax.swing.JButton btnRegistrar;
+    public javax.swing.JButton btnVolver;
+    public javax.swing.JLabel jLabel1;
+    public javax.swing.JLabel jLabel2;
+    public javax.swing.JLabel jLabel3;
+    public javax.swing.JLabel jLabel4;
+    public javax.swing.JLabel jLabel5;
+    public javax.swing.JLabel jLabel6;
+    public javax.swing.JTextField txtApellidos;
+    public javax.swing.JPasswordField txtConfirmarContrasena;
+    public javax.swing.JPasswordField txtContrasena;
+    public javax.swing.JTextField txtDni;
+    public javax.swing.JTextField txtNombres;
     // End of variables declaration//GEN-END:variables
 }
