@@ -31,26 +31,50 @@ public class ControladorCompra {
         this.vistaCompra.btnCalcularMonto.addActionListener(e -> calcularMonto());
         this.vistaCompra.btnComprar.addActionListener(e -> comprarEntradas());
         this.vistaCompra.btnVolver.addActionListener(e -> volverMenu());
+        this.vistaCompra.cboZona.addActionListener(e -> calcularMonto());
+        this.vistaCompra.spnCantidad.addChangeListener(e -> calcularMonto());
     }
 
     public void iniciar() {
-        concierto = arregloConcierto.buscarConcierto("Aniversario UNMSM");
-
-        if (concierto == null) {
-            javax.swing.JOptionPane.showMessageDialog(vistaCompra, "No se encontró el concierto Aniversario UNMSM.");
-            volverMenu();
-            return;
+        Concierto[] listaConciertos = arregloConcierto.listarConciertos();
+        
+        vistaCompra.cboConcierto.removeAllItems();
+        for (Concierto c : listaConciertos) {
+            if (c != null) {
+                vistaCompra.cboConcierto.addItem(c.getNombre());
+            }
         }
 
-        Concierto[] listaConciertos = arregloConcierto.listarConciertos();
+        vistaCompra.cboConcierto.addActionListener(e -> actualizarConciertoSeleccionado());
+
         arregloVentas.cargarVentas(listaConciertos, listaConciertos.length);
 
         cargarTarjetaCliente();
 
+        actualizarConciertoSeleccionado();
+
         vistaCompra.setLocationRelativeTo(null);
         vistaCompra.setVisible(true);
+    }
 
-        calcularMonto();
+    private void actualizarConciertoSeleccionado() {
+        Object seleccionado = vistaCompra.cboConcierto.getSelectedItem();
+        if (seleccionado == null) {
+            return;
+        }
+
+        String nombreConcierto = seleccionado.toString();
+        concierto = arregloConcierto.buscarConcierto(nombreConcierto);
+
+        if (concierto != null) {
+            vistaCompra.cboZona.removeAllItems();
+            for (Zona z : concierto.getZonas()) {
+                if (z != null) {
+                    vistaCompra.cboZona.addItem(z.getNombre());
+                }
+            }
+            calcularMonto();
+        }
     }
 
     private void cargarTarjetaCliente() {
@@ -87,7 +111,12 @@ public class ControladorCompra {
     }
 
     private Zona obtenerZonaSeleccionada() {
-        String nombreZona = vistaCompra.cboZona.getSelectedItem().toString();
+        Object seleccionado = vistaCompra.cboZona.getSelectedItem();
+        if (seleccionado == null) {
+            return null;
+        }
+
+        String nombreZona = seleccionado.toString();
 
         if (concierto == null) {
             return null;
@@ -100,7 +129,6 @@ public class ControladorCompra {
         Zona zona = obtenerZonaSeleccionada();
 
         if (zona == null) {
-            javax.swing.JOptionPane.showMessageDialog(vistaCompra, "Zona no encontrada.");
             return;
         }
 
@@ -109,7 +137,10 @@ public class ControladorCompra {
 
         vistaCompra.lblMonto.setText("Monto: S/ " + monto);
 
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
         String resumen = "";
+        resumen += "Concierto: " + concierto.getNombre() + "\n";
+        resumen += "Fecha: " + sdf.format(concierto.getFecha()) + "\n";
         resumen += "Zona seleccionada: " + zona.getNombre() + "\n";
         resumen += "Precio por entrada: S/ " + zona.getPrecio() + "\n";
         resumen += "Cantidad: " + cantidad + "\n";
@@ -151,6 +182,8 @@ public class ControladorCompra {
                     zona,
                     cantidad
             );
+
+            arregloConcierto.guardarConciertos();
 
             Tarjeta tarjeta = cliente.getTarjeta();
 

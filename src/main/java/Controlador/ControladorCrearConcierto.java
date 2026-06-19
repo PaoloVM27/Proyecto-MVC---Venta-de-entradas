@@ -51,6 +51,13 @@ public class ControladorCrearConcierto {
             boolean creado = arregloConcierto.crearConcierto(nombre, fecha);
 
             if (creado) {
+                Modelo.Usuario admin = auth.getUsuarioActual();
+                if (admin != null) {
+                    arregloConcierto.agregarZona(admin, nombre, "VIP", 50, 200.0);
+                    arregloConcierto.agregarZona(admin, nombre, "Preferencial", 100, 150.0);
+                    arregloConcierto.agregarZona(admin, nombre, "General", 200, 80.0);
+                    arregloConcierto.agregarZona(admin, nombre, "Tribuna", 150, 50.0);
+                }
                 JOptionPane.showMessageDialog(vista, "Concierto creado con éxito.");
                 vista.txtNombreConcierto.setText("");
                 vista.txtFechaConcierto.setText("");
