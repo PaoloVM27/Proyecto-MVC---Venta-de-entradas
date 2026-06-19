@@ -1,6 +1,7 @@
 package Controlador;
 
 import Vista.VistaLogin;
+import Vista.VistaMenuAdmin;
 
 public class ControladorLogin {
     private VistaLogin vista;
@@ -66,9 +67,17 @@ public class ControladorLogin {
 
         if (loginCorrecto) {
             javax.swing.JOptionPane.showMessageDialog(vista, "Bienvenido administrador: " + auth.getUsuarioActual().getNombres());
-            vista.txtDni.setText("");
-            vista.txtContrasena.setText("");
-            vista.cboTipoUsuario.setSelectedIndex(0);
+            
+            vista.setVisible(false);
+
+            VistaMenuAdmin vistaMenuAdmin = new VistaMenuAdmin();
+            ControladorMenuAdmin controladorMenuAdmin = new ControladorMenuAdmin(
+                    vistaMenuAdmin,
+                    vista,
+                    auth
+                );
+
+            controladorMenuAdmin.iniciar();
 
         } else {
             javax.swing.JOptionPane.showMessageDialog(vista, "DNI o contraseña de administrador incorrectos.");
