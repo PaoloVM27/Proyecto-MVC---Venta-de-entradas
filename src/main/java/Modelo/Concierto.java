@@ -2,7 +2,7 @@ package Modelo;
 
 import java.util.Date;
 
-public class Concierto {
+public class Concierto implements java.io.Serializable {
     private String nombre;
     private Date fecha;
     

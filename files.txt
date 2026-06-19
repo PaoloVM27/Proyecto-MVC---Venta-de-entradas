@@ -2,6 +2,7 @@ C:\Users\USUARIO\Documents\NetBeansProjects\SistemaConciertos\src\main\java\Cont
 C:\Users\USUARIO\Documents\NetBeansProjects\SistemaConciertos\src\main\java\Controlador\ControladorLogin.java
 C:\Users\USUARIO\Documents\NetBeansProjects\SistemaConciertos\src\main\java\Controlador\ControladorMenuCliente.java
 C:\Users\USUARIO\Documents\NetBeansProjects\SistemaConciertos\src\main\java\Controlador\ControladorRegistroCliente.java
+C:\Users\USUARIO\Documents\NetBeansProjects\SistemaConciertos\src\main\java\Librerias\SerializadoraGen.java
 C:\Users\USUARIO\Documents\NetBeansProjects\SistemaConciertos\src\main\java\Main\Main.java
 C:\Users\USUARIO\Documents\NetBeansProjects\SistemaConciertos\src\main\java\Modelo\ArregloCliente.java
 C:\Users\USUARIO\Documents\NetBeansProjects\SistemaConciertos\src\main\java\Modelo\ArregloConcierto.java

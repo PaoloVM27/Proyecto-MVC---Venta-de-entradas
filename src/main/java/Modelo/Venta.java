@@ -2,7 +2,7 @@ package Modelo;
 
 import java.util.Date;
 
-public class Venta {
+public class Venta implements java.io.Serializable {
     private Date fecha;
     private double monto;
     

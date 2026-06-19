@@ -1,6 +1,6 @@
 package Modelo;
 
-public class Zona {
+public class Zona implements java.io.Serializable {
     private String nombre;
     private int capacidad;
     private double precio;

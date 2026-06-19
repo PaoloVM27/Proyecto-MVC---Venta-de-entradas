@@ -1,6 +1,6 @@
 package Modelo;
 
-public abstract class Persona {
+public abstract class Persona implements java.io.Serializable {
     protected String nombres;
     protected String apellidos;
     protected String dni;
