@@ -6,15 +6,15 @@ import Vista.VistaRegistroCliente;
 public class ControladorRegistroCliente {
     private VistaRegistroCliente vistaRegistro;
     private VistaLogin vistaLogin;
-    private ControladorAutenticacion auth;
+    private Servicios.Autenticacion auth;
 
-    public ControladorRegistroCliente(VistaRegistroCliente vistaRegistro, VistaLogin vistaLogin, ControladorAutenticacion auth) {
+    public ControladorRegistroCliente(VistaRegistroCliente vistaRegistro, VistaLogin vistaLogin, Servicios.Autenticacion auth) {
         this.vistaRegistro = vistaRegistro;
         this.vistaLogin = vistaLogin;
         this.auth = auth;
 
-        this.vistaRegistro.agregarEventoRegistrar(e -> registrarCliente());
-        this.vistaRegistro.agregarEventoVolver(e -> volverLogin());
+        this.vistaRegistro.btnRegistrar.addActionListener(e -> registrarCliente());
+        this.vistaRegistro.btnVolver.addActionListener(e -> volverLogin());
     }
 
     public void iniciar() {
@@ -23,50 +23,54 @@ public class ControladorRegistroCliente {
     }
 
     private void registrarCliente() {
-        String nombres = vistaRegistro.getNombres();
-        String apellidos = vistaRegistro.getApellidos();
-        String dni = vistaRegistro.getDni();
-        String contrasena = vistaRegistro.getContrasena();
-        String confirmarContrasena = vistaRegistro.getConfirmarContrasena();
+        String nombres = vistaRegistro.txtNombres.getText().trim();
+        String apellidos = vistaRegistro.txtApellidos.getText().trim();
+        String dni = vistaRegistro.txtDni.getText().trim();
+        String contrasena = new String(vistaRegistro.txtContrasena.getPassword()).trim();
+        String confirmarContrasena = new String(vistaRegistro.txtConfirmarContrasena.getPassword()).trim();
 
         if (nombres.isEmpty()) {
-            vistaRegistro.mostrarMensaje("Ingresa tus nombres.");
+            javax.swing.JOptionPane.showMessageDialog(vistaRegistro, "Ingresa tus nombres.");
             return;
         }
 
         if (apellidos.isEmpty()) {
-            vistaRegistro.mostrarMensaje("Ingresa tus apellidos.");
+            javax.swing.JOptionPane.showMessageDialog(vistaRegistro, "Ingresa tus apellidos.");
             return;
         }
 
         if (dni.isEmpty()) {
-            vistaRegistro.mostrarMensaje("Ingresa tu DNI.");
+            javax.swing.JOptionPane.showMessageDialog(vistaRegistro, "Ingresa tu DNI.");
             return;
         }
 
         if (contrasena.isEmpty()) {
-            vistaRegistro.mostrarMensaje("Ingresa una contraseña.");
+            javax.swing.JOptionPane.showMessageDialog(vistaRegistro, "Ingresa una contraseña.");
             return;
         }
 
         if (confirmarContrasena.isEmpty()) {
-            vistaRegistro.mostrarMensaje("Confirma tu contraseña.");
+            javax.swing.JOptionPane.showMessageDialog(vistaRegistro, "Confirma tu contraseña.");
             return;
         }
 
         if (!contrasena.equals(confirmarContrasena)) {
-            vistaRegistro.mostrarMensaje("Las contraseñas no coinciden.");
+            javax.swing.JOptionPane.showMessageDialog(vistaRegistro, "Las contraseñas no coinciden.");
             return;
         }
 
         boolean registrado = auth.registrarCliente(nombres, apellidos, dni, contrasena);
 
         if (registrado) {
-            vistaRegistro.mostrarMensaje("Cliente registrado correctamente.");
-            vistaRegistro.limpiarCampos();
+            javax.swing.JOptionPane.showMessageDialog(vistaRegistro, "Cliente registrado correctamente.");
+            vistaRegistro.txtNombres.setText("");
+            vistaRegistro.txtApellidos.setText("");
+            vistaRegistro.txtDni.setText("");
+            vistaRegistro.txtContrasena.setText("");
+            vistaRegistro.txtConfirmarContrasena.setText("");
             volverLogin();
         } else {
-            vistaRegistro.mostrarMensaje("No se pudo registrar. Puede que el DNI ya exista.");
+            javax.swing.JOptionPane.showMessageDialog(vistaRegistro, "No se pudo registrar. Puede que el DNI ya exista.");
         }
     }
 

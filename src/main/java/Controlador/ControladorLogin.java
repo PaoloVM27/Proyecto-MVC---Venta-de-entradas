@@ -4,14 +4,14 @@ import Vista.VistaLogin;
 
 public class ControladorLogin {
     private VistaLogin vista;
-    private ControladorAutenticacion auth;
+    private Servicios.Autenticacion auth;
 
-    public ControladorLogin(VistaLogin vista, ControladorAutenticacion auth) {
+    public ControladorLogin(VistaLogin vista, Servicios.Autenticacion auth) {
         this.vista = vista;
         this.auth = auth;
 
-        this.vista.agregarEventoIngresar(e -> iniciarSesion());
-        this.vista.agregarEventoRegistrarse(e -> irARegistro());
+        this.vista.btnIngresar.addActionListener(e -> iniciarSesion());
+        this.vista.btnRegistrarse.addActionListener(e -> irARegistro());
     }
 
     public void iniciar() {
@@ -20,12 +20,12 @@ public class ControladorLogin {
     }
 
     private void iniciarSesion() {
-        String dni = vista.getDni();
-        String contrasena = vista.getContrasena();
-        String tipoUsuario = vista.getTipoUsuario();
+        String dni = vista.txtDni.getText().trim();
+        String contrasena = new String(vista.txtContrasena.getPassword()).trim();
+        String tipoUsuario = vista.cboTipoUsuario.getSelectedItem().toString().trim();
 
         if (dni.isEmpty() || contrasena.isEmpty()) {
-            vista.mostrarMensaje("Completa el DNI y la contraseña.");
+            javax.swing.JOptionPane.showMessageDialog(vista, "Completa el DNI y la contraseña.");
             return;
         }
 
@@ -34,7 +34,7 @@ public class ControladorLogin {
         } else if (tipoUsuario.equalsIgnoreCase("Administrador")) {
             iniciarSesionAdministrador(dni, contrasena);
         } else {
-            vista.mostrarMensaje("Tipo de usuario no válido.");
+            javax.swing.JOptionPane.showMessageDialog(vista, "Tipo de usuario no válido.");
         }
     }
 
@@ -42,7 +42,7 @@ public class ControladorLogin {
     boolean loginCorrecto = auth.iniciarSesionCliente(dni, contrasena);
 
     if (loginCorrecto) {
-        vista.mostrarMensaje("Bienvenido cliente: " + auth.getClienteActual().getNombres());
+        javax.swing.JOptionPane.showMessageDialog(vista, "Bienvenido cliente: " + auth.getClienteActual().getNombres());
 
         vista.setVisible(false);
 
@@ -57,7 +57,7 @@ public class ControladorLogin {
         controladorMenuCliente.iniciar();
 
     } else {
-        vista.mostrarMensaje("DNI o contraseña de cliente incorrectos.");
+        javax.swing.JOptionPane.showMessageDialog(vista, "DNI o contraseña de cliente incorrectos.");
         }
     }
 
@@ -65,15 +65,17 @@ public class ControladorLogin {
         boolean loginCorrecto = auth.iniciarSesionUsuario(dni, contrasena);
 
         if (loginCorrecto) {
-            vista.mostrarMensaje("Bienvenido administrador: " + auth.getUsuarioActual().getNombres());
-            vista.limpiarCampos();
+            javax.swing.JOptionPane.showMessageDialog(vista, "Bienvenido administrador: " + auth.getUsuarioActual().getNombres());
+            vista.txtDni.setText("");
+            vista.txtContrasena.setText("");
+            vista.cboTipoUsuario.setSelectedIndex(0);
 
             /*
              * Aquí después abriremos VistaMenuAdmin.
              */
 
         } else {
-            vista.mostrarMensaje("DNI o contraseña de administrador incorrectos.");
+            javax.swing.JOptionPane.showMessageDialog(vista, "DNI o contraseña de administrador incorrectos.");
         }
     }
 

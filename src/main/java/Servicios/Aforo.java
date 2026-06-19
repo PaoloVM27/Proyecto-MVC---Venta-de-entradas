@@ -1,13 +1,13 @@
-package Controlador;
+package Servicios;
 
 import Modelo.Concierto;
 import Modelo.Entrada;
 import Modelo.Zona;
-import java.util.List;
 
-public class ControladorAforo {
 
-    public ControladorAforo() {
+public class Aforo {
+
+    public Aforo() {
     }
 
     public int obtenerCapacidadZona(Zona zona) {
@@ -77,10 +77,10 @@ public class ControladorAforo {
         String resumen = "";
         resumen += "Concierto: " + concierto.getNombre() + "\n";
         resumen += "Fecha: " + concierto.getFecha() + "\n";
-        resumen += "Zonas registradas: " + concierto.getZonas().size() + "\n";
+        resumen += "Zonas registradas: " + concierto.getZonas().length + "\n";
         resumen += "-----------------------------\n";
 
-        List<Zona> zonas = concierto.getZonas();
+        Zona[] zonas = concierto.getZonas();
 
         for (Zona zona : zonas) {
             resumen += obtenerResumenZona(zona);

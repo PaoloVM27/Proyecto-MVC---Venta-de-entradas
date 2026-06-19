@@ -1,19 +1,30 @@
-package Controlador;
+package Modelo;
 
 import Modelo.Concierto;
 import Modelo.Usuario;
 import Modelo.Zona;
 import Persistencia.ArchivoConcierto;
 import java.util.Date;
-import java.util.List;
 
-public class ControladorConcierto {
-    private List<Concierto> conciertos;
+public class ArregloConcierto {
+    private Concierto[] conciertos;
+    private int numConciertos;
     private ArchivoConcierto archivoConcierto;
 
-    public ControladorConcierto() {
+    public ArregloConcierto() {
         this.archivoConcierto = new ArchivoConcierto();
-        this.conciertos = archivoConcierto.cargarConciertos();
+        Concierto[] cargados = archivoConcierto.cargarConciertos();
+        
+        if (cargados != null) {
+            this.conciertos = new Concierto[Math.max(10, cargados.length * 2)];
+            this.numConciertos = cargados.length;
+            for (int i = 0; i < cargados.length; i++) {
+                this.conciertos[i] = cargados[i];
+            }
+        } else {
+            this.conciertos = new Concierto[10];
+            this.numConciertos = 0;
+        }
     }
 
     public boolean crearConcierto(String nombre, Date fecha) {
@@ -29,10 +40,23 @@ public class ControladorConcierto {
             return false;
         }
 
-        Concierto nuevoConcierto = new Concierto(nombre, fecha);
-        conciertos.add(nuevoConcierto);
+        if (numConciertos >= conciertos.length) {
+            redimensionarArreglo();
+        }
 
-        return archivoConcierto.guardarConciertos(conciertos);
+        Concierto nuevoConcierto = new Concierto(nombre, fecha);
+        conciertos[numConciertos] = nuevoConcierto;
+        numConciertos++;
+
+        return archivoConcierto.guardarConciertos(conciertos, numConciertos);
+    }
+    
+    private void redimensionarArreglo() {
+        Concierto[] nuevoArreglo = new Concierto[conciertos.length * 2];
+        for (int i = 0; i < numConciertos; i++) {
+            nuevoArreglo[i] = conciertos[i];
+        }
+        conciertos = nuevoArreglo;
     }
 
     public boolean crearConciertoUNMSM(Usuario usuario) {
@@ -46,7 +70,11 @@ public class ControladorConcierto {
 
         if (concierto == null) {
             concierto = new Concierto(nombreConcierto, new Date());
-            conciertos.add(concierto);
+            if (numConciertos >= conciertos.length) {
+                redimensionarArreglo();
+            }
+            conciertos[numConciertos] = concierto;
+            numConciertos++;
         }
 
         if (concierto.buscarZona("VIP") == null) {
@@ -65,7 +93,7 @@ public class ControladorConcierto {
             usuario.registrarZonas(concierto, "Tribuna", 150, 50.0);
         }
 
-        return archivoConcierto.guardarConciertos(conciertos);
+        return archivoConcierto.guardarConciertos(conciertos, numConciertos);
     }
 
     public boolean agregarZona(Usuario usuario, String nombreConcierto, String nombreZona, int capacidad, double precio) {
@@ -82,7 +110,7 @@ public class ControladorConcierto {
         boolean agregada = usuario.registrarZonas(concierto, nombreZona, capacidad, precio);
 
         if (agregada) {
-            return archivoConcierto.guardarConciertos(conciertos);
+            return archivoConcierto.guardarConciertos(conciertos, numConciertos);
         }
 
         return false;
@@ -102,7 +130,7 @@ public class ControladorConcierto {
         boolean eliminada = usuario.eliminarZona(concierto, nombreZona);
 
         if (eliminada) {
-            return archivoConcierto.guardarConciertos(conciertos);
+            return archivoConcierto.guardarConciertos(conciertos, numConciertos);
         }
 
         return false;
@@ -113,9 +141,9 @@ public class ControladorConcierto {
             return null;
         }
 
-        for (Concierto concierto : conciertos) {
-            if (concierto.getNombre().equalsIgnoreCase(nombre)) {
-                return concierto;
+        for (int i = 0; i < numConciertos; i++) {
+            if (conciertos[i].getNombre().equalsIgnoreCase(nombre)) {
+                return conciertos[i];
             }
         }
 
@@ -133,10 +161,14 @@ public class ControladorConcierto {
     }
 
     public boolean guardarConciertos() {
-        return archivoConcierto.guardarConciertos(conciertos);
+        return archivoConcierto.guardarConciertos(conciertos, numConciertos);
     }
 
-    public List<Concierto> listarConciertos() {
-        return conciertos;
+    public Concierto[] listarConciertos() {
+        Concierto[] resultado = new Concierto[numConciertos];
+        for (int i = 0; i < numConciertos; i++) {
+            resultado[i] = conciertos[i];
+        }
+        return resultado;
     }
 }

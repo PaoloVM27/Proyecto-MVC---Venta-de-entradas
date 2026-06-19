@@ -18,84 +18,7 @@ public class VistaCompra extends javax.swing.JFrame {
     public VistaCompra() {
         initComponents();
     }
-    public String getZonaSeleccionada() {
-    return cboZona.getSelectedItem().toString();
-    }
 
-    public int getCantidad() {
-        return Integer.parseInt(spnCantidad.getValue().toString());
-    }
-
-    public int getNumeroTarjeta() {
-        return Integer.parseInt(txtNumeroTarjeta.getText().trim());
-    }
-
-    public String getNombreTarjeta() {
-        return txtNombreTarjeta.getText().trim();
-    }
-
-    public String getFechaTarjeta() {
-        return txtFechaTarjeta.getText().trim();
-    }
-
-    public int getCvv() {
-        return Integer.parseInt(txtCvv.getText().trim());
-    }
-
-    public double getSaldo() {
-        return Double.parseDouble(txtSaldo.getText().trim());
-    }
-
-    public void setMonto(double monto) {
-        lblMonto.setText("Monto: S/ " + monto);
-    }
-
-    public void setResumen(String resumen) {
-        txtResumen.setText(resumen);
-    }
-
-    public void mostrarMensaje(String mensaje) {
-        javax.swing.JOptionPane.showMessageDialog(this, mensaje);
-    }
-
-    public void limpiarResumen() {
-        txtResumen.setText("");
-    }
-
-    public void agregarEventoCalcularMonto(java.awt.event.ActionListener listener) {
-        btnCalcularMonto.addActionListener(listener);
-    }
-
-    public void agregarEventoComprar(java.awt.event.ActionListener listener) {
-        btnComprar.addActionListener(listener);
-    }
-
-    public void agregarEventoVolver(java.awt.event.ActionListener listener) {
-        btnVolver.addActionListener(listener);
-    }
-    public void mostrarDatosTarjeta(int numero, String nombre, String fecha, int cvv, double saldo) {
-    txtNumeroTarjeta.setText(String.valueOf(numero));
-    txtNombreTarjeta.setText(nombre);
-    txtFechaTarjeta.setText(fecha);
-    txtCvv.setText(String.valueOf(cvv));
-    txtSaldo.setText(String.valueOf(saldo));
-}
-
-    public void bloquearDatosTarjeta() {
-        txtNumeroTarjeta.setEditable(false);
-        txtNombreTarjeta.setEditable(false);
-        txtFechaTarjeta.setEditable(false);
-        txtCvv.setEditable(false);
-        txtSaldo.setEditable(false);
-    }
-
-    public void habilitarDatosTarjeta() {
-        txtNumeroTarjeta.setEditable(true);
-        txtNombreTarjeta.setEditable(true);
-        txtFechaTarjeta.setEditable(true);
-        txtCvv.setEditable(true);
-        txtSaldo.setEditable(true);
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -319,29 +242,29 @@ public class VistaCompra extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCalcularMonto;
-    private javax.swing.JButton btnComprar;
-    private javax.swing.JButton btnVolver;
-    private javax.swing.JComboBox<String> cboZona;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblCantidad;
-    private javax.swing.JLabel lblConcierto;
-    private javax.swing.JLabel lblMonto;
-    private javax.swing.JLabel lblTitulo;
-    private javax.swing.JLabel lblZona;
-    private javax.swing.JSpinner spnCantidad;
-    private javax.swing.JTextField txtCvv;
-    private javax.swing.JTextField txtFechaTarjeta;
-    private javax.swing.JTextField txtNombreTarjeta;
-    private javax.swing.JTextField txtNumeroTarjeta;
-    private javax.swing.JTextArea txtResumen;
-    private javax.swing.JTextField txtSaldo;
+    public javax.swing.JButton btnCalcularMonto;
+    public javax.swing.JButton btnComprar;
+    public javax.swing.JButton btnVolver;
+    public javax.swing.JComboBox<String> cboZona;
+    public javax.swing.JLabel jLabel1;
+    public javax.swing.JLabel jLabel2;
+    public javax.swing.JLabel jLabel3;
+    public javax.swing.JLabel jLabel4;
+    public javax.swing.JLabel jLabel5;
+    public javax.swing.JLabel jLabel6;
+    public javax.swing.JLabel jLabel7;
+    public javax.swing.JScrollPane jScrollPane1;
+    public javax.swing.JLabel lblCantidad;
+    public javax.swing.JLabel lblConcierto;
+    public javax.swing.JLabel lblMonto;
+    public javax.swing.JLabel lblTitulo;
+    public javax.swing.JLabel lblZona;
+    public javax.swing.JSpinner spnCantidad;
+    public javax.swing.JTextField txtCvv;
+    public javax.swing.JTextField txtFechaTarjeta;
+    public javax.swing.JTextField txtNombreTarjeta;
+    public javax.swing.JTextField txtNumeroTarjeta;
+    public javax.swing.JTextArea txtResumen;
+    public javax.swing.JTextField txtSaldo;
     // End of variables declaration//GEN-END:variables
 }

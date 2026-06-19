@@ -28,9 +28,6 @@ public abstract class Persona {
         return false;
     }
 
-    public boolean anularVenta() {
-        return false;
-    }
 
     public boolean validarContrasena(String contrasena) {
         return this.contrasena.equals(contrasena);

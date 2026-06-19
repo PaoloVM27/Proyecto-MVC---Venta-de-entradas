@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ArchivoUsuario {
     private String ruta;
@@ -25,11 +23,12 @@ public class ArchivoUsuario {
         }
     }
 
-    public boolean guardarUsuarios(List<Usuario> usuarios) {
+    public boolean guardarUsuarios(Usuario[] usuarios, int numUsuarios) {
         try {
             PrintWriter escritor = new PrintWriter(new FileWriter(ruta));
 
-            for (Usuario usuario : usuarios) {
+            for (int i = 0; i < numUsuarios; i++) {
+                Usuario usuario = usuarios[i];
                 escritor.println(
                         usuario.getNombres() + ";" +
                         usuario.getApellidos() + ";" +
@@ -47,14 +46,15 @@ public class ArchivoUsuario {
         }
     }
 
-    public List<Usuario> cargarUsuarios() {
-        List<Usuario> usuarios = new ArrayList<>();
+    public Usuario[] cargarUsuarios() {
+        Usuario[] usuarios = new Usuario[10];
+        int numUsuarios = 0;
 
         try {
             File archivo = new File(ruta);
 
             if (!archivo.exists()) {
-                return usuarios;
+                return new Usuario[0];
             }
 
             BufferedReader lector = new BufferedReader(new FileReader(ruta));
@@ -81,16 +81,29 @@ public class ArchivoUsuario {
                         }
                     }
 
-                    usuarios.add(usuario);
+                    if (numUsuarios >= usuarios.length) {
+                        Usuario[] nuevoArreglo = new Usuario[usuarios.length * 2];
+                        for (int i = 0; i < numUsuarios; i++) {
+                            nuevoArreglo[i] = usuarios[i];
+                        }
+                        usuarios = nuevoArreglo;
+                    }
+
+                    usuarios[numUsuarios] = usuario;
+                    numUsuarios++;
                 }
             }
 
             lector.close();
 
         } catch (Exception e) {
-            return usuarios;
+            // Retorna lo cargado
         }
 
-        return usuarios;
+        Usuario[] resultado = new Usuario[numUsuarios];
+        for (int i = 0; i < numUsuarios; i++) {
+            resultado[i] = usuarios[i];
+        }
+        return resultado;
     }
 }

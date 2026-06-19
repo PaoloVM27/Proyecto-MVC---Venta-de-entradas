@@ -7,9 +7,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class ArchivoConcierto {
     private String ruta;
@@ -27,19 +25,24 @@ public class ArchivoConcierto {
         }
     }
 
-    public boolean guardarConciertos(List<Concierto> conciertos) {
+    public boolean guardarConciertos(Concierto[] conciertos, int numConciertos) {
         try {
             PrintWriter escritor = new PrintWriter(new FileWriter(ruta));
 
-            for (Concierto concierto : conciertos) {
-                for (Zona zona : concierto.getZonas()) {
-                    escritor.println(
-                            concierto.getNombre() + ";" +
-                            concierto.getFecha().getTime() + ";" +
-                            zona.getNombre() + ";" +
-                            zona.getCapacidad() + ";" +
-                            zona.getPrecio()
-                    );
+            for (int i = 0; i < numConciertos; i++) {
+                Concierto concierto = conciertos[i];
+                Zona[] zonas = concierto.getZonas();
+                for (int j = 0; j < zonas.length; j++) {
+                    Zona zona = zonas[j];
+                    if (zona != null) {
+                        escritor.println(
+                                concierto.getNombre() + ";" +
+                                concierto.getFecha().getTime() + ";" +
+                                zona.getNombre() + ";" +
+                                zona.getCapacidad() + ";" +
+                                zona.getPrecio()
+                        );
+                    }
                 }
             }
 
@@ -51,14 +54,15 @@ public class ArchivoConcierto {
         }
     }
 
-    public List<Concierto> cargarConciertos() {
-        List<Concierto> conciertos = new ArrayList<>();
+    public Concierto[] cargarConciertos() {
+        Concierto[] conciertos = new Concierto[10];
+        int numConciertos = 0;
 
         try {
             File archivo = new File(ruta);
 
             if (!archivo.exists()) {
-                return conciertos;
+                return new Concierto[0];
             }
 
             BufferedReader lector = new BufferedReader(new FileReader(ruta));
@@ -74,11 +78,19 @@ public class ArchivoConcierto {
                     int capacidad = Integer.parseInt(datos[3]);
                     double precio = Double.parseDouble(datos[4]);
 
-                    Concierto concierto = buscarConciertoEnLista(conciertos, nombreConcierto);
+                    Concierto concierto = buscarConciertoEnLista(conciertos, numConciertos, nombreConcierto);
 
                     if (concierto == null) {
                         concierto = new Concierto(nombreConcierto, new Date(fechaMillis));
-                        conciertos.add(concierto);
+                        if (numConciertos >= conciertos.length) {
+                            Concierto[] nuevoArreglo = new Concierto[conciertos.length * 2];
+                            for (int i = 0; i < numConciertos; i++) {
+                                nuevoArreglo[i] = conciertos[i];
+                            }
+                            conciertos = nuevoArreglo;
+                        }
+                        conciertos[numConciertos] = concierto;
+                        numConciertos++;
                     }
 
                     concierto.agregarZona(nombreZona, capacidad, precio);
@@ -88,16 +100,20 @@ public class ArchivoConcierto {
             lector.close();
 
         } catch (Exception e) {
-            return conciertos;
+            // Devuelve lo que pudo cargar
         }
 
-        return conciertos;
+        Concierto[] resultado = new Concierto[numConciertos];
+        for (int i = 0; i < numConciertos; i++) {
+            resultado[i] = conciertos[i];
+        }
+        return resultado;
     }
 
-    private Concierto buscarConciertoEnLista(List<Concierto> conciertos, String nombre) {
-        for (Concierto concierto : conciertos) {
-            if (concierto.getNombre().equalsIgnoreCase(nombre)) {
-                return concierto;
+    private Concierto buscarConciertoEnLista(Concierto[] conciertos, int numConciertos, String nombre) {
+        for (int i = 0; i < numConciertos; i++) {
+            if (conciertos[i].getNombre().equalsIgnoreCase(nombre)) {
+                return conciertos[i];
             }
         }
 

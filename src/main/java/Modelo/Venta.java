@@ -1,13 +1,14 @@
 package Modelo;
 
 import java.util.Date;
-import java.util.List;
-import java.util.ArrayList;
 
 public class Venta {
     private Date fecha;
     private double monto;
-    private List<Entrada> entradas;
+    
+    private Entrada[] entradas;
+    private int numEntradas;
+    
     private Tarjeta tarjeta;
 
     // Datos auxiliares para persistencia
@@ -18,7 +19,8 @@ public class Venta {
     public Venta() {
         this.fecha = new Date();
         this.monto = 0.0;
-        this.entradas = new ArrayList<>();
+        this.entradas = new Entrada[4];
+        this.numEntradas = 0;
         this.tarjeta = null;
         this.dniCliente = "";
         this.nombreConcierto = "";
@@ -26,15 +28,16 @@ public class Venta {
     }
 
     public boolean anular() {
-        if (entradas.isEmpty()) {
+        if (numEntradas == 0) {
             return false;
         }
 
-        for (Entrada entrada : entradas) {
-            entrada.liberar();
+        for (int i = 0; i < numEntradas; i++) {
+            entradas[i].liberar();
+            entradas[i] = null;
         }
 
-        entradas.clear();
+        numEntradas = 0;
         monto = 0.0;
 
         return true;
@@ -49,15 +52,18 @@ public class Venta {
             throw new IllegalArgumentException("El precio debe ser mayor que cero.");
         }
 
-        if (entradas.size() >= 4) {
+        if (numEntradas >= 4) {
             throw new IllegalArgumentException("No puedes comprar más de 4 entradas por venta.");
         }
 
-        if (entradas.contains(e)) {
-            throw new IllegalArgumentException("La entrada ya fue agregada a esta venta.");
+        for (int i = 0; i < numEntradas; i++) {
+            if (entradas[i] == e) {
+                throw new IllegalArgumentException("La entrada ya fue agregada a esta venta.");
+            }
         }
 
-        entradas.add(e);
+        entradas[numEntradas] = e;
+        numEntradas++;
         monto += precio;
 
         return true;
@@ -83,12 +89,16 @@ public class Venta {
         }
     }
 
-    public List<Entrada> getEntradas() {
-        return entradas;
+    public Entrada[] getEntradas() {
+        Entrada[] resultado = new Entrada[numEntradas];
+        for (int i = 0; i < numEntradas; i++) {
+            resultado[i] = entradas[i];
+        }
+        return resultado;
     }
 
     public int getCantidadEntradas() {
-        return entradas.size();
+        return numEntradas;
     }
 
     public Tarjeta getTarjeta() {

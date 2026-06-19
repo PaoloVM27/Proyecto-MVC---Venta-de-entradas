@@ -6,21 +6,21 @@ import Vista.VistaMenuCliente;
 public class ControladorMenuCliente {
     private VistaMenuCliente vistaMenu;
     private VistaLogin vistaLogin;
-    private ControladorAutenticacion auth;
+    private Servicios.Autenticacion auth;
 
-    public ControladorMenuCliente(VistaMenuCliente vistaMenu, VistaLogin vistaLogin, ControladorAutenticacion auth) {
+    public ControladorMenuCliente(VistaMenuCliente vistaMenu, VistaLogin vistaLogin, Servicios.Autenticacion auth) {
         this.vistaMenu = vistaMenu;
         this.vistaLogin = vistaLogin;
         this.auth = auth;
 
-        this.vistaMenu.agregarEventoComprar(e -> irAComprar());
-        this.vistaMenu.agregarEventoMisEntradas(e -> irAMisEntradas());
-        this.vistaMenu.agregarEventoCerrarSesion(e -> cerrarSesion());
+        this.vistaMenu.btnComprar.addActionListener(e -> irAComprar());
+        this.vistaMenu.btnMisEntradas.addActionListener(e -> irAMisEntradas());
+        this.vistaMenu.btnCerrarSesion.addActionListener(e -> cerrarSesion());
     }
 
     public void iniciar() {
         if (auth.getClienteActual() != null) {
-            vistaMenu.setNombreCliente(auth.getClienteActual().getNombres());
+            vistaMenu.lblBienvenida.setText("Bienvenido, " + auth.getClienteActual().getNombres());
         }
 
         vistaMenu.setLocationRelativeTo(null);
@@ -41,7 +41,7 @@ public class ControladorMenuCliente {
     controladorCompra.iniciar();
     }
     private void irAMisEntradas() {
-        vistaMenu.mostrarMensaje("Luego abriremos la vista de mis entradas.");
+        javax.swing.JOptionPane.showMessageDialog(vistaMenu, "Luego abriremos la vista de mis entradas.");
     }
 
     private void cerrarSesion() {
@@ -49,7 +49,9 @@ public class ControladorMenuCliente {
 
         vistaMenu.dispose();
 
-        vistaLogin.limpiarCampos();
+        vistaLogin.txtDni.setText("");
+        vistaLogin.txtContrasena.setText("");
+        vistaLogin.cboTipoUsuario.setSelectedIndex(0);
         vistaLogin.setLocationRelativeTo(null);
         vistaLogin.setVisible(true);
     }

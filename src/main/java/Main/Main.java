@@ -1,12 +1,12 @@
 package Main;
 
-import Controlador.ControladorAutenticacion;
+import Servicios.Autenticacion;
 import Controlador.ControladorLogin;
 import Vista.VistaLogin;
 
 public class Main {
     public static void main(String[] args) {
-        ControladorAutenticacion auth = new ControladorAutenticacion();
+        Autenticacion auth = new Autenticacion();
 
         VistaLogin vistaLogin = new VistaLogin();
 
