@@ -18,11 +18,6 @@ public class Usuario extends Persona implements java.io.Serializable {
     }
 
     public void registrarZonas() {
-        /*
-         * Método conservado porque aparece en el UML.
-         * La versión funcional es registrarZonas(...)
-         * con parámetros.
-         */
     }
 
     public boolean registrarZonas(Concierto concierto, String nombreZona, int capacidad, double precio) {

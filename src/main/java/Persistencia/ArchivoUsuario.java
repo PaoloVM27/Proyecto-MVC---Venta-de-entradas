@@ -48,7 +48,6 @@ public class ArchivoUsuario {
             }
             
         } catch (Exception e) {
-            // Ignorar errores de carga inicial
         }
 
         return new Usuario[0];

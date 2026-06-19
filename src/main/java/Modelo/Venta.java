@@ -11,7 +11,6 @@ public class Venta implements java.io.Serializable {
     
     private Tarjeta tarjeta;
 
-    // Datos auxiliares para persistencia
     private String dniCliente;
     private String nombreConcierto;
     private String nombreZona;

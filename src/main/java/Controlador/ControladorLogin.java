@@ -70,10 +70,6 @@ public class ControladorLogin {
             vista.txtContrasena.setText("");
             vista.cboTipoUsuario.setSelectedIndex(0);
 
-            /*
-             * Aquí después abriremos VistaMenuAdmin.
-             */
-
         } else {
             javax.swing.JOptionPane.showMessageDialog(vista, "DNI o contraseña de administrador incorrectos.");
         }

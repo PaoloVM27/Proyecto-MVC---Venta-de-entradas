@@ -32,7 +32,6 @@ public class SerializadoraGen {
             obj = lector.readObject();
             lector.close();
         } catch (FileNotFoundException e) {
-            // Archivo no existe aún, se puede manejar devolviendo null
             return null;
         } catch (IOException e) {
             throw new RuntimeException(e);

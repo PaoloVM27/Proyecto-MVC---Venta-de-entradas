@@ -21,7 +21,6 @@ public class ArchivoCliente {
 
     public boolean guardarClientes(Cliente[] clientes, int numClientes) {
         try {
-            // Creamos un arreglo ajustado al tamaño real para no guardar nulls innecesarios
             Cliente[] arregloExacto = new Cliente[numClientes];
             for (int i = 0; i < numClientes; i++) {
                 arregloExacto[i] = clientes[i];
@@ -49,7 +48,7 @@ public class ArchivoCliente {
             }
             
         } catch (Exception e) {
-            // Ignorar errores de carga inicial
+            
         }
 
         return new Cliente[0];

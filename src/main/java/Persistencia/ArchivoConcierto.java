@@ -48,7 +48,6 @@ public class ArchivoConcierto {
             }
             
         } catch (Exception e) {
-            // Ignorar errores de carga inicial
         }
 
         return new Concierto[0];

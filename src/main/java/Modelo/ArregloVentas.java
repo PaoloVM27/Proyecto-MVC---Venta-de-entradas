@@ -130,7 +130,6 @@ public class ArregloVentas {
         boolean anulada = concierto.anularVenta(venta);
 
         if (anulada) {
-            // Eliminar venta del arreglo
             for (int i = 0; i < numVentas; i++) {
                 if (ventas[i] == venta) {
                     for (int j = i; j < numVentas - 1; j++) {

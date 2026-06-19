@@ -66,7 +66,6 @@ public class Concierto implements java.io.Serializable {
     public boolean eliminarZona(String nombre) {
         for (int i = 0; i < numZonas; i++) {
             if (zonas[i].getNombre().equalsIgnoreCase(nombre)) {
-                // Desplazar elementos a la izquierda
                 for (int j = i; j < numZonas - 1; j++) {
                     zonas[j] = zonas[j + 1];
                 }
@@ -148,10 +147,9 @@ public class Concierto implements java.io.Serializable {
         }
         
         for (int i = 0; i < numVentas; i++) {
-            if (ventas[i] == venta) { // Comparación por referencia
+            if (ventas[i] == venta) {
                 boolean anulada = ventas[i].anular();
                 if (anulada) {
-                    // Desplazar elementos a la izquierda
                     for (int j = i; j < numVentas - 1; j++) {
                         ventas[j] = ventas[j + 1];
                     }
