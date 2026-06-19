@@ -31,6 +31,8 @@ public class ControladorCompra {
         this.vistaCompra.btnCalcularMonto.addActionListener(e -> calcularMonto());
         this.vistaCompra.btnComprar.addActionListener(e -> comprarEntradas());
         this.vistaCompra.btnVolver.addActionListener(e -> volverMenu());
+        this.vistaCompra.cboZona.addActionListener(e -> calcularMonto());
+        this.vistaCompra.spnCantidad.addChangeListener(e -> calcularMonto());
     }
 
     public void iniciar() {
@@ -127,7 +129,6 @@ public class ControladorCompra {
         Zona zona = obtenerZonaSeleccionada();
 
         if (zona == null) {
-            javax.swing.JOptionPane.showMessageDialog(vistaCompra, "Zona no encontrada.");
             return;
         }
 
@@ -136,7 +137,10 @@ public class ControladorCompra {
 
         vistaCompra.lblMonto.setText("Monto: S/ " + monto);
 
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
         String resumen = "";
+        resumen += "Concierto: " + concierto.getNombre() + "\n";
+        resumen += "Fecha: " + sdf.format(concierto.getFecha()) + "\n";
         resumen += "Zona seleccionada: " + zona.getNombre() + "\n";
         resumen += "Precio por entrada: S/ " + zona.getPrecio() + "\n";
         resumen += "Cantidad: " + cantidad + "\n";
