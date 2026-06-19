@@ -45,7 +45,6 @@ public class ControladorMenuAdmin {
 
         vistaLogin.txtDni.setText("");
         vistaLogin.txtContrasena.setText("");
-        vistaLogin.cboTipoUsuario.setSelectedIndex(0);
         vistaLogin.setLocationRelativeTo(null);
         vistaLogin.setVisible(true);
     }
