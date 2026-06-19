@@ -44,7 +44,6 @@ public class ControladorCrearConcierto {
         }
 
         try {
-            // Formato de fecha estándar: dd/MM/yyyy
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
             format.setLenient(false);
             Date fecha = format.parse(fechaTexto);

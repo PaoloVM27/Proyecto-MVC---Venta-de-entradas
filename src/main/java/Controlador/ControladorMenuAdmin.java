@@ -14,10 +14,7 @@ public class ControladorMenuAdmin {
         this.vistaLogin = vistaLogin;
         this.auth = auth;
 
-        // Conectar el botón de abrir la ventana de generar conciertos
         this.vistaMenu.btnGenerarConcierto.addActionListener(e -> irAGenerarConcierto());
-        
-        // Conectar el botón de Cerrar Sesión
         this.vistaMenu.btnCerrarSesion.addActionListener(e -> cerrarSesion());
     }
 
