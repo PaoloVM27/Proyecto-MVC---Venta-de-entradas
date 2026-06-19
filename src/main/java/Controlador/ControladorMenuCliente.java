@@ -2,6 +2,7 @@ package Controlador;
 
 import Vista.VistaLogin;
 import Vista.VistaMenuCliente;
+import Vista.VistaMetodoPago;
 
 public class ControladorMenuCliente {
     private VistaMenuCliente vistaMenu;
@@ -14,6 +15,7 @@ public class ControladorMenuCliente {
         this.auth = auth;
 
         this.vistaMenu.btnComprar.addActionListener(e -> irAComprar());
+        this.vistaMenu.btnMetodoPago.addActionListener(e -> irAMetodoPago());
         this.vistaMenu.btnMisEntradas.addActionListener(e -> irAMisEntradas());
         this.vistaMenu.btnCerrarSesion.addActionListener(e -> cerrarSesion());
     }
@@ -55,4 +57,15 @@ public class ControladorMenuCliente {
         vistaLogin.setLocationRelativeTo(null);
         vistaLogin.setVisible(true);
     }
-}
+    
+    private void irAMetodoPago() {
+        vistaMenu.setVisible(false);
+        VistaMetodoPago vistaMetodoPago = new VistaMetodoPago();
+        ControladorMetodoPago controladorMetodoPago = new ControladorMetodoPago(
+                vistaMetodoPago,
+                vistaMenu,
+                auth
+        );
+        controladorMetodoPago.iniciar();
+        }
+    }

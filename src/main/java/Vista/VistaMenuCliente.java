@@ -33,6 +33,7 @@ public class VistaMenuCliente extends javax.swing.JFrame {
         btnComprar = new javax.swing.JToggleButton();
         btnMisEntradas = new javax.swing.JButton();
         btnCerrarSesion = new javax.swing.JButton();
+        btnMetodoPago = new javax.swing.JButton();
 
         jToggleButton2.setText("jToggleButton2");
 
@@ -58,6 +59,13 @@ public class VistaMenuCliente extends javax.swing.JFrame {
 
         btnCerrarSesion.setText("Cerrar Sesión");
 
+        btnMetodoPago.setText("Método de Pago");
+        btnMetodoPago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMetodoPagoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -73,7 +81,8 @@ public class VistaMenuCliente extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnComprar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnMisEntradas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnCerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnMetodoPago, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(140, 140, 140))
         );
         layout.setVerticalGroup(
@@ -89,7 +98,9 @@ public class VistaMenuCliente extends javax.swing.JFrame {
                 .addComponent(btnMisEntradas)
                 .addGap(18, 18, 18)
                 .addComponent(btnCerrarSesion)
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnMetodoPago)
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         pack();
@@ -102,6 +113,10 @@ public class VistaMenuCliente extends javax.swing.JFrame {
     private void btnMisEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMisEntradasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnMisEntradasActionPerformed
+
+    private void btnMetodoPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMetodoPagoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnMetodoPagoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -141,6 +156,7 @@ public class VistaMenuCliente extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnCerrarSesion;
     public javax.swing.JToggleButton btnComprar;
+    public javax.swing.JButton btnMetodoPago;
     public javax.swing.JButton btnMisEntradas;
     public javax.swing.JLabel jLabel1;
     public javax.swing.JToggleButton jToggleButton2;

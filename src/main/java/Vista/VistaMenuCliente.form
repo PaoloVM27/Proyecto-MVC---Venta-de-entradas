@@ -44,6 +44,7 @@
                   <Component id="btnComprar" max="32767" attributes="0"/>
                   <Component id="btnMisEntradas" max="32767" attributes="0"/>
                   <Component id="btnCerrarSesion" max="32767" attributes="0"/>
+                  <Component id="btnMetodoPago" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="140" max="-2" attributes="0"/>
           </Group>
@@ -62,7 +63,9 @@
               <Component id="btnMisEntradas" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="btnCerrarSesion" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="87" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="btnMetodoPago" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="46" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -98,6 +101,14 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Cerrar Sesi&#xf3;n"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnMetodoPago">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="M&#xe9;todo de Pago"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMetodoPagoActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
