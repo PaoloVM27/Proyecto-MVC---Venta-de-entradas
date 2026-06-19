@@ -1,6 +1,6 @@
 package Modelo;
 
-public class Tarjeta {
+public class Tarjeta implements java.io.Serializable {
     private int numero;
     private String nombre;
     private String fecha;

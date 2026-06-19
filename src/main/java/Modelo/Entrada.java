@@ -1,6 +1,6 @@
 package Modelo;
 
-public class Entrada {
+public class Entrada implements java.io.Serializable {
     private int numero;
     private String estado;
 

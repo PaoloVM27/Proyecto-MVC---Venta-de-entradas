@@ -1,6 +1,6 @@
 package Modelo;
 
-public class Usuario extends Persona {
+public class Usuario extends Persona implements java.io.Serializable {
     private boolean estado;
 
     public Usuario() {

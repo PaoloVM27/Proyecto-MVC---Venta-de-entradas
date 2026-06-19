@@ -3,7 +3,7 @@ package Modelo;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Cliente extends Persona {
+public class Cliente extends Persona implements java.io.Serializable {
     private int puntos;
     private Tarjeta tarjeta;
 
