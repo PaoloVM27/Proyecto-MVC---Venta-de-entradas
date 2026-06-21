@@ -6,10 +6,11 @@ import Persistencia.ArchivoCliente;
 import Persistencia.ArchivoUsuario;
 
 public class Autenticacion {
-    private Cliente[] clientes;
-    private int numClientes;
-    private Usuario[] usuarios;
-    private int numUsuarios;
+    private static Cliente[] clientes;
+    private static int numClientes;
+    private static Usuario[] usuarios;
+    private static int numUsuarios;
+    private static boolean cargado = false;
     
     private Cliente clienteActual;
     private Usuario usuarioActual;
@@ -20,28 +21,40 @@ public class Autenticacion {
         this.archivoCliente = new ArchivoCliente();
         this.archivoUsuario = new ArchivoUsuario();
 
-        Cliente[] clientesCargados = archivoCliente.cargarClientes();
-        if (clientesCargados != null) {
-            this.clientes = new Cliente[Math.max(10, clientesCargados.length * 2)];
-            this.numClientes = clientesCargados.length;
-            for (int i = 0; i < clientesCargados.length; i++) {
-                this.clientes[i] = clientesCargados[i];
+        if (!cargado) {
+            Cliente[] clientesCargados = archivoCliente.cargarClientes();
+            if (clientesCargados != null) {
+                clientes = new Cliente[Math.max(10, clientesCargados.length * 2)];
+                numClientes = clientesCargados.length;
+                for (int i = 0; i < clientesCargados.length; i++) {
+                    clientes[i] = clientesCargados[i];
+                }
+            } else {
+                clientes = new Cliente[10];
+                numClientes = 0;
             }
-        } else {
-            this.clientes = new Cliente[10];
-            this.numClientes = 0;
-        }
 
-        Usuario[] usuariosCargados = archivoUsuario.cargarUsuarios();
-        if (usuariosCargados != null) {
-            this.usuarios = new Usuario[Math.max(10, usuariosCargados.length * 2)];
-            this.numUsuarios = usuariosCargados.length;
-            for (int i = 0; i < usuariosCargados.length; i++) {
-                this.usuarios[i] = usuariosCargados[i];
+            Usuario[] usuariosCargados = archivoUsuario.cargarUsuarios();
+            if (usuariosCargados != null) {
+                usuarios = new Usuario[Math.max(10, usuariosCargados.length * 2)];
+                numUsuarios = usuariosCargados.length;
+                for (int i = 0; i < usuariosCargados.length; i++) {
+                    usuarios[i] = usuariosCargados[i];
+                }
+            } else {
+                usuarios = new Usuario[10];
+                numUsuarios = 0;
             }
-        } else {
-            this.usuarios = new Usuario[10];
-            this.numUsuarios = 0;
+
+            if (buscarUsuarioPorDni("11223344") == null) {
+                if (numUsuarios >= usuarios.length) {
+                    redimensionarUsuarios();
+                }
+                usuarios[numUsuarios] = new Usuario("Admin", "Administrador", "11223344", "admin123");
+                numUsuarios++;
+                archivoUsuario.guardarUsuarios(usuarios, numUsuarios);
+            }
+            cargado = true;
         }
 
         this.clienteActual = null;
