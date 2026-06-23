@@ -3,6 +3,7 @@ package Controlador;
 import Vista.VistaLogin;
 import Vista.VistaMenuCliente;
 import Vista.VistaMetodoPago;
+import Vista.VistaMisEntradas;
 
 public class ControladorMenuCliente {
     private VistaMenuCliente vistaMenu;
@@ -43,7 +44,15 @@ public class ControladorMenuCliente {
     controladorCompra.iniciar();
     }
     private void irAMisEntradas() {
-        javax.swing.JOptionPane.showMessageDialog(vistaMenu, "Luego abriremos la vista de mis entradas.");
+        vistaMenu.setVisible(false);
+        VistaMisEntradas vistaMisEntradas = new VistaMisEntradas();
+        ControladorMisEntradas controladorMisEntradas = new ControladorMisEntradas(
+                vistaMisEntradas,
+                vistaMenu,
+                auth
+        );
+
+        controladorMisEntradas.iniciar();
     }
 
     private void cerrarSesion() {
