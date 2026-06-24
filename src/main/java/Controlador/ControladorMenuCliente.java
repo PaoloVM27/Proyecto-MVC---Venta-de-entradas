@@ -4,6 +4,7 @@ import Vista.VistaLogin;
 import Vista.VistaMenuCliente;
 import Vista.VistaMetodoPago;
 import Vista.VistaMisEntradas;
+import Vista.VistaPerfilCliente;
 
 public class ControladorMenuCliente {
     private VistaMenuCliente vistaMenu;
@@ -19,6 +20,7 @@ public class ControladorMenuCliente {
         this.vistaMenu.btnMetodoPago.addActionListener(e -> irAMetodoPago());
         this.vistaMenu.btnMisEntradas.addActionListener(e -> irAMisEntradas());
         this.vistaMenu.btnCerrarSesion.addActionListener(e -> cerrarSesion());
+        this.vistaMenu.btnPerfilCliente.addActionListener(e -> irAPerfilCliente());
     }
 
     public void iniciar() {
@@ -53,6 +55,19 @@ public class ControladorMenuCliente {
         );
 
         controladorMisEntradas.iniciar();
+    }
+    private void irAPerfilCliente() {
+        vistaMenu.setVisible(false);
+
+        VistaPerfilCliente vistaPerfilCliente = new VistaPerfilCliente();
+
+        ControladorPerfilCliente controladorPerfilCliente = new ControladorPerfilCliente(
+                vistaPerfilCliente,
+                vistaMenu,
+                auth
+        );
+
+        controladorPerfilCliente.iniciar();
     }
 
     private void cerrarSesion() {
