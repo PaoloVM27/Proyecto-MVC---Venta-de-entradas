@@ -99,9 +99,7 @@ public class VistaGestionVentas extends javax.swing.JFrame {
                                     .addComponent(txtFiltroNombre)
                                     .addComponent(txtFiltroConcierto, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(61, 61, 61)
-                                .addComponent(btnAnularVenta)
-                                .addGap(166, 166, 166)
+                                .addGap(414, 414, 414)
                                 .addComponent(btnVolver))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(242, 242, 242)
@@ -115,8 +113,11 @@ public class VistaGestionVentas extends javax.swing.JFrame {
                         .addComponent(lblRecaudacion))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(99, 99, 99)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 633, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(91, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 633, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(174, 174, 174)
+                        .addComponent(btnAnularVenta)))
+                .addContainerGap(312, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,10 +146,10 @@ public class VistaGestionVentas extends javax.swing.JFrame {
                     .addComponent(lblRecaudacion)
                     .addComponent(jLabel5))
                 .addGap(62, 62, 62)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAnularVenta)
-                    .addComponent(btnVolver))
-                .addContainerGap(202, Short.MAX_VALUE))
+                .addComponent(btnVolver)
+                .addGap(100, 100, 100)
+                .addComponent(btnAnularVenta)
+                .addContainerGap(255, Short.MAX_VALUE))
         );
 
         pack();

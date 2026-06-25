@@ -4,6 +4,7 @@ import Vista.VistaLogin;
 import Vista.VistaMenuAdmin;
 import Vista.VistaCrearConcierto;
 import Vista.VistaGestionVentas;
+import Vista.VistaGestionUsuarios;
 
 public class ControladorMenuAdmin {
     private VistaMenuAdmin vistaMenu;
@@ -17,6 +18,7 @@ public class ControladorMenuAdmin {
 
         this.vistaMenu.btnGenerarConcierto.addActionListener(e -> irAGenerarConcierto());
         this.vistaMenu.btnGestionVentas.addActionListener(e -> irAGestionVentas());
+        this.vistaMenu.btnGestionUsuarios.addActionListener(e -> irAGestionUsuarios());
         this.vistaMenu.btnCerrarSesion.addActionListener(e -> cerrarSesion());
     }
 
@@ -46,6 +48,18 @@ public class ControladorMenuAdmin {
 
         VistaGestionVentas vistaGestion = new VistaGestionVentas();
         ControladorGestionVentas controlador = new ControladorGestionVentas(
+                vistaGestion,
+                vistaMenu,
+                auth
+        );
+        controlador.iniciar();
+    }
+
+    private void irAGestionUsuarios() {
+        vistaMenu.setVisible(false);
+
+        VistaGestionUsuarios vistaGestion = new VistaGestionUsuarios();
+        ControladorGestionUsuarios controlador = new ControladorGestionUsuarios(
                 vistaGestion,
                 vistaMenu,
                 auth
