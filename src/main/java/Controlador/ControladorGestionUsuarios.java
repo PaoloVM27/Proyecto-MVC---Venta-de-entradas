@@ -67,7 +67,8 @@ public class ControladorGestionUsuarios {
 
         for (Cliente c : auth.getClientes()) {
             boolean matchDni = filtroDni.isEmpty() || c.getDni().contains(filtroDni);
-            boolean matchEstado = filtroEstado.equals("Todos") || filtroEstado.equals("Activo");
+            String estadoCliente = c.isEstado() ? "Activo" : "Suspendido";
+            boolean matchEstado = filtroEstado.equals("Todos") || filtroEstado.equals(estadoCliente);
             if (matchDni && matchEstado) {
                 model.addRow(new Object[]{
                     c.getDni(),
