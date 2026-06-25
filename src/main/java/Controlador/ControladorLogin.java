@@ -41,6 +41,18 @@ public class ControladorLogin {
             return;
         }
 
+        Modelo.Usuario usuarioSuspendido = auth.buscarUsuarioPorDni(dni);
+        if (usuarioSuspendido != null && !usuarioSuspendido.isEstado()) {
+            javax.swing.JOptionPane.showMessageDialog(vista, "Tu cuenta ha sido suspendida. Contacta al administrador.");
+            return;
+        }
+
+        Modelo.Cliente clienteSuspendido = auth.buscarClientePorDni(dni);
+        if (clienteSuspendido != null && !clienteSuspendido.isEstado()) {
+            javax.swing.JOptionPane.showMessageDialog(vista, "Tu cuenta ha sido suspendida. Contacta al administrador.");
+            return;
+        }
+
         javax.swing.JOptionPane.showMessageDialog(vista, "DNI o contraseña incorrectos.");
     }
 

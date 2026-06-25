@@ -75,7 +75,7 @@ public class ControladorGestionUsuarios {
                     c.getApellidos(),
                     c.getPuntos(),
                     "Cliente",
-                    "Activo"
+                    c.isEstado() ? "Activo" : "Suspendido"
                 });
             }
         }
@@ -126,7 +126,13 @@ public class ControladorGestionUsuarios {
                 javax.swing.JOptionPane.showMessageDialog(vista, "Administrador suspendido.");
             }
         } else {
-            javax.swing.JOptionPane.showMessageDialog(vista, "Solo se pueden suspender administradores por ahora.");
+            Modelo.Cliente c = auth.buscarClientePorDni(dni);
+            if (c != null) {
+                c.desactivar();
+                auth.guardarClientes();
+                cargarUsuarios();
+                javax.swing.JOptionPane.showMessageDialog(vista, "Cliente suspendido.");
+            }
         }
     }
 
@@ -140,6 +146,11 @@ public class ControladorGestionUsuarios {
         String dni = vista.tblUsuarios.getValueAt(fila, 0).toString();
         String tipo = vista.tblUsuarios.getValueAt(fila, 4).toString();
 
+        if (dni.equals(DNI_SUPER_ADMIN)) {
+            javax.swing.JOptionPane.showMessageDialog(vista, "No se puede modificar al administrador principal.");
+            return;
+        }
+
         if (tipo.equals("Admin")) {
             Usuario u = auth.buscarUsuarioPorDni(dni);
             if (u != null) {
@@ -149,7 +160,13 @@ public class ControladorGestionUsuarios {
                 javax.swing.JOptionPane.showMessageDialog(vista, "Administrador activado.");
             }
         } else {
-            javax.swing.JOptionPane.showMessageDialog(vista, "Solo se pueden activar administradores por ahora.");
+            Modelo.Cliente c = auth.buscarClientePorDni(dni);
+            if (c != null) {
+                c.activar();
+                auth.guardarClientes();
+                cargarUsuarios();
+                javax.swing.JOptionPane.showMessageDialog(vista, "Cliente activado.");
+            }
         }
     }
 
@@ -161,7 +178,24 @@ public class ControladorGestionUsuarios {
     }
 
     private void irAModificarDatos() {
-        javax.swing.JOptionPane.showMessageDialog(vista, "Vista de modificar datos — próximamente.");
+        int fila = vista.tblUsuarios.getSelectedRow();
+        if (fila == -1) {
+            javax.swing.JOptionPane.showMessageDialog(vista, "Selecciona un usuario de la tabla.");
+            return;
+        }
+
+        String dni = vista.tblUsuarios.getValueAt(fila, 0).toString();
+        String tipo = vista.tblUsuarios.getValueAt(fila, 4).toString();
+
+        if (dni.equals(DNI_SUPER_ADMIN)) {
+            javax.swing.JOptionPane.showMessageDialog(vista, "No se pueden modificar los datos del administrador principal.");
+            return;
+        }
+
+        vista.setVisible(false);
+        Vista.VistaModificarDatos vistaModificar = new Vista.VistaModificarDatos();
+        ControladorModificarDatos controlador = new ControladorModificarDatos(vistaModificar, vista, auth, dni, tipo);
+        controlador.iniciar();
     }
 
     private void volver() {
