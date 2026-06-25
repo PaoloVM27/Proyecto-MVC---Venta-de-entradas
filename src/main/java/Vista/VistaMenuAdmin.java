@@ -32,6 +32,8 @@ public class VistaMenuAdmin extends javax.swing.JFrame {
         lblBienvenida = new javax.swing.JLabel();
         btnGenerarConcierto = new javax.swing.JButton();
         btnCerrarSesion = new javax.swing.JButton();
+        btnGestionVentas = new javax.swing.JButton();
+        btnGestionUsuarios = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -44,26 +46,34 @@ public class VistaMenuAdmin extends javax.swing.JFrame {
 
         btnCerrarSesion.setText("Cerrar Sesion");
 
+        btnGestionVentas.setText("Gestión de Ventas");
+        btnGestionVentas.addActionListener(this::btnGestionVentasActionPerformed);
+
+        btnGestionUsuarios.setText("Gestión de Usuarios");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(164, 164, 164))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(217, 217, 217)
                         .addComponent(lblBienvenida))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(193, 193, 193)
+                        .addGap(195, 195, 195)
                         .addComponent(btnCerrarSesion))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(176, 176, 176)
-                        .addComponent(btnGenerarConcierto)))
-                .addContainerGap(183, Short.MAX_VALUE))
+                        .addGap(177, 177, 177)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnGenerarConcierto)
+                            .addComponent(btnGestionVentas)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(187, 187, 187)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnGestionUsuarios)
+                            .addComponent(jLabel1))))
+                .addContainerGap(220, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -72,11 +82,15 @@ public class VistaMenuAdmin extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(lblBienvenida)
-                .addGap(61, 61, 61)
+                .addGap(42, 42, 42)
+                .addComponent(btnGestionUsuarios)
+                .addGap(43, 43, 43)
+                .addComponent(btnGestionVentas)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnGenerarConcierto)
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addComponent(btnCerrarSesion)
-                .addContainerGap(187, Short.MAX_VALUE))
+                .addContainerGap(238, Short.MAX_VALUE))
         );
 
         pack();
@@ -85,6 +99,10 @@ public class VistaMenuAdmin extends javax.swing.JFrame {
     private void btnGenerarConciertoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarConciertoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnGenerarConciertoActionPerformed
+
+    private void btnGestionVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionVentasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGestionVentasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -114,6 +132,8 @@ public class VistaMenuAdmin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnCerrarSesion;
     public javax.swing.JButton btnGenerarConcierto;
+    public javax.swing.JButton btnGestionUsuarios;
+    public javax.swing.JButton btnGestionVentas;
     private javax.swing.JLabel jLabel1;
     public javax.swing.JLabel lblBienvenida;
     // End of variables declaration//GEN-END:variables

@@ -138,6 +138,10 @@ public class Autenticacion {
             return false;
         }
 
+        if (buscarClientePorDni(dni) != null) {
+            return false;
+        }
+
         if (numUsuarios >= usuarios.length) {
             redimensionarUsuarios();
         }
