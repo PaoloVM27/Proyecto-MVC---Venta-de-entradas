@@ -8,10 +8,10 @@ public class Main {
     public static void main(String[] args) {
         Autenticacion auth = new Autenticacion();
 
-        VistaLogin vistaLogin = new VistaLogin();
-
-        ControladorLogin controladorLogin = new ControladorLogin(vistaLogin, auth);
-
-        controladorLogin.iniciar();
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            VistaLogin vistaLogin = new VistaLogin();
+            ControladorLogin controladorLogin = new ControladorLogin(vistaLogin, auth);
+            controladorLogin.iniciar();
+        });
     }
 }
