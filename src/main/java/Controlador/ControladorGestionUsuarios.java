@@ -31,7 +31,7 @@ public class ControladorGestionUsuarios {
                 auth.getUsuarioActual().getDni().equals(DNI_SUPER_ADMIN);
 
         vista.btnRegistrarAdmin.setEnabled(esSuperAdmin);
-        vista.btnModificarDatos.setEnabled(esSuperAdmin);
+        vista.btnModificarDatos.setEnabled(true);
     }
 
     public void iniciar() {
@@ -107,6 +107,11 @@ public class ControladorGestionUsuarios {
         String dni = vista.tblUsuarios.getValueAt(fila, 0).toString();
         String tipo = vista.tblUsuarios.getValueAt(fila, 4).toString();
 
+        if (dni.equals(DNI_SUPER_ADMIN)) {
+            javax.swing.JOptionPane.showMessageDialog(vista, "No se puede suspender al administrador principal.");
+            return;
+        }
+
         if (dni.equals(auth.getUsuarioActual().getDni())) {
             javax.swing.JOptionPane.showMessageDialog(vista, "No puedes suspenderte a ti mismo.");
             return;
@@ -149,7 +154,10 @@ public class ControladorGestionUsuarios {
     }
 
     private void irARegistrarAdmin() {
-        javax.swing.JOptionPane.showMessageDialog(vista, "Vista de registro de admin — próximamente.");
+        vista.setVisible(false);
+        Vista.VistaRegistrarAdmin vistaRegistrar = new Vista.VistaRegistrarAdmin();
+        ControladorRegistrarAdmin controlador = new ControladorRegistrarAdmin(vistaRegistrar, vista, auth);
+        controlador.iniciar();
     }
 
     private void irAModificarDatos() {
