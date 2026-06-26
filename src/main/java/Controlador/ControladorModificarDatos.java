@@ -31,6 +31,8 @@ public class ControladorModificarDatos {
 
     public void iniciar() {
         cargarDatosActuales();
+        vista.setSize(700, 520);
+        vista.setResizable(false);
         vista.setLocationRelativeTo(null);
         vista.setVisible(true);
     }
@@ -119,6 +121,8 @@ public class ControladorModificarDatos {
 
     private void volver() {
         vista.dispose();
+        vistaGestion.setSize(700, 520);
+        vistaGestion.setResizable(false);
         vistaGestion.setLocationRelativeTo(null);
         vistaGestion.setVisible(true);
     }

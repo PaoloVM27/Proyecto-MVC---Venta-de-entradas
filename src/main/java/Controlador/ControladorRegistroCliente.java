@@ -18,6 +18,8 @@ public class ControladorRegistroCliente {
     }
 
     public void iniciar() {
+        vistaRegistro.setSize(700, 520);
+        vistaRegistro.setResizable(false);
         vistaRegistro.setLocationRelativeTo(null);
         vistaRegistro.setVisible(true);
     }
@@ -76,6 +78,8 @@ public class ControladorRegistroCliente {
 
     private void volverLogin() {
         vistaRegistro.dispose();
+        vistaLogin.setSize(700, 520);
+        vistaLogin.setResizable(false);
         vistaLogin.setLocationRelativeTo(null);
         vistaLogin.setVisible(true);
     }

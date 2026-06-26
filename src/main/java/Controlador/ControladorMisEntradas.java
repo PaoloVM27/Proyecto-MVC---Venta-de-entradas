@@ -37,6 +37,8 @@ public class ControladorMisEntradas {
         prepararTabla();
         cargarEntradas();
 
+        vistaMisEntradas.setSize(700, 520);
+        vistaMisEntradas.setResizable(false);
         vistaMisEntradas.setLocationRelativeTo(null);
         vistaMisEntradas.setVisible(true);
     }
@@ -123,6 +125,8 @@ public class ControladorMisEntradas {
     private void volverMenu() {
         vistaMisEntradas.dispose();
 
+        vistaMenu.setSize(700, 520);
+        vistaMenu.setResizable(false);
         vistaMenu.setLocationRelativeTo(null);
         vistaMenu.setVisible(true);
     }

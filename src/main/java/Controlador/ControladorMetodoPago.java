@@ -33,6 +33,8 @@ public class ControladorMetodoPago {
     public void iniciar() {
         cargarTarjetaGuardada();
 
+        vistaMetodoPago.setSize(700, 520);
+        vistaMetodoPago.setResizable(false);
         vistaMetodoPago.setLocationRelativeTo(null);
         vistaMetodoPago.setVisible(true);
     }
@@ -158,6 +160,8 @@ public class ControladorMetodoPago {
     private void volverMenu() {
         vistaMetodoPago.dispose();
 
+        vistaMenu.setSize(700, 520);
+        vistaMenu.setResizable(false);
         vistaMenu.setLocationRelativeTo(null);
         vistaMenu.setVisible(true);
     }

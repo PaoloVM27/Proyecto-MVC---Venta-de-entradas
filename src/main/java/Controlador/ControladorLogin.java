@@ -16,6 +16,8 @@ public class ControladorLogin {
     }
 
     public void iniciar() {
+        vista.setSize(700, 520);
+        vista.setResizable(false);
         vista.setLocationRelativeTo(null);
         vista.setVisible(true);
     }

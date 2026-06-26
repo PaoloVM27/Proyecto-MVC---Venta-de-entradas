@@ -11,4 +11,11 @@
     <exec.mainClass>Main.Main</exec.mainClass>
 </properties>
     <name>SistemaConciertos</name>
+    <dependencies>
+        <dependency>
+            <groupId>org.netbeans.external</groupId>
+            <artifactId>AbsoluteLayout</artifactId>
+            <version>RELEASE290</version>
+        </dependency>
+    </dependencies>
 </project>

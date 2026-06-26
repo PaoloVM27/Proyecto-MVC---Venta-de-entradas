@@ -28,7 +28,6 @@ public class ControladorCompra {
         this.arregloVentas = new Modelo.ArregloVentas(auth.getClientes(), auth.getNumClientes());
         this.arregloCliente = new Modelo.ArregloCliente(auth.getClienteActual(), auth.getClientes(), auth.getNumClientes());
 
-        this.vistaCompra.btnCalcularMonto.addActionListener(e -> calcularMonto());
         this.vistaCompra.btnComprar.addActionListener(e -> comprarEntradas());
         this.vistaCompra.btnVolver.addActionListener(e -> volverMenu());
         this.vistaCompra.cboZona.addActionListener(e -> calcularMonto());
@@ -52,7 +51,9 @@ public class ControladorCompra {
         cargarTarjetaCliente();
 
         actualizarConciertoSeleccionado();
-
+        
+        vistaCompra.setSize(700, 520);
+        vistaCompra.setResizable(false);
         vistaCompra.setLocationRelativeTo(null);
         vistaCompra.setVisible(true);
     }
@@ -92,20 +93,17 @@ public class ControladorCompra {
             vistaCompra.txtNombreTarjeta.setText(tarjeta.getNombre());
             vistaCompra.txtFechaTarjeta.setText(tarjeta.getFecha());
             vistaCompra.txtCvv.setText(String.valueOf(tarjeta.getCvv()));
-            vistaCompra.txtSaldo.setText(String.valueOf(tarjeta.getSaldo()));
 
             vistaCompra.txtNumeroTarjeta.setEditable(false);
             vistaCompra.txtNombreTarjeta.setEditable(false);
             vistaCompra.txtFechaTarjeta.setEditable(false);
             vistaCompra.txtCvv.setEditable(false);
-            vistaCompra.txtSaldo.setEditable(false);
             vistaCompra.txtResumen.setText("Tarjeta cargada correctamente.\nPuedes comprar tus entradas.");
         } else {
             vistaCompra.txtNumeroTarjeta.setEditable(true);
             vistaCompra.txtNombreTarjeta.setEditable(true);
             vistaCompra.txtFechaTarjeta.setEditable(true);
             vistaCompra.txtCvv.setEditable(true);
-            vistaCompra.txtSaldo.setEditable(true);
             vistaCompra.txtResumen.setText("No tienes tarjeta registrada.\nIngresa los datos de tu tarjeta para comprar.");
         }
     }
@@ -191,13 +189,11 @@ public class ControladorCompra {
             vistaCompra.txtNombreTarjeta.setText(tarjeta.getNombre());
             vistaCompra.txtFechaTarjeta.setText(tarjeta.getFecha());
             vistaCompra.txtCvv.setText(String.valueOf(tarjeta.getCvv()));
-            vistaCompra.txtSaldo.setText(String.valueOf(tarjeta.getSaldo()));
 
             vistaCompra.txtNumeroTarjeta.setEditable(false);
             vistaCompra.txtNombreTarjeta.setEditable(false);
             vistaCompra.txtFechaTarjeta.setEditable(false);
             vistaCompra.txtCvv.setEditable(false);
-            vistaCompra.txtSaldo.setEditable(false);
 
             String resumen = "";
             resumen += "COMPRA REALIZADA CORRECTAMENTE\n";
@@ -226,14 +222,13 @@ public class ControladorCompra {
         String nombre = vistaCompra.txtNombreTarjeta.getText().trim();
         String fecha = vistaCompra.txtFechaTarjeta.getText().trim();
         int cvv = Integer.parseInt(vistaCompra.txtCvv.getText().trim());
-        double saldo = Double.parseDouble(vistaCompra.txtSaldo.getText().trim());
 
         boolean registrada = arregloCliente.registrarTarjeta(
                 numero,
                 nombre,
                 fecha,
                 cvv,
-                saldo
+                0.0
         );
 
         if (!registrada) {
@@ -247,6 +242,8 @@ public class ControladorCompra {
     private void volverMenu() {
         vistaCompra.dispose();
 
+        vistaMenuCliente.setSize(700, 520);
+        vistaMenuCliente.setResizable(false);
         vistaMenuCliente.setLocationRelativeTo(null);
         vistaMenuCliente.setVisible(true);
     }

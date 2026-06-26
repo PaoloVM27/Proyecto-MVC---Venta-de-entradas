@@ -23,6 +23,8 @@ public class ControladorPerfilCliente {
     public void iniciar() {
         cargarDatosCliente();
 
+        vistaPerfil.setSize(700, 520);
+        vistaPerfil.setResizable(false);
         vistaPerfil.setLocationRelativeTo(null);
         vistaPerfil.setVisible(true);
     }
@@ -94,6 +96,8 @@ public class ControladorPerfilCliente {
     private void volverMenu() {
         vistaPerfil.dispose();
 
+        vistaMenu.setSize(700, 520);
+        vistaMenu.setResizable(false);
         vistaMenu.setLocationRelativeTo(null);
         vistaMenu.setVisible(true);
     }

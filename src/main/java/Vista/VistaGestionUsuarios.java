@@ -28,7 +28,6 @@ public class VistaGestionUsuarios extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsuarios = new javax.swing.JTable();
         btnSuspender = new javax.swing.JButton();
@@ -42,10 +41,15 @@ public class VistaGestionUsuarios extends javax.swing.JFrame {
         cboEstado = new javax.swing.JComboBox<>();
         btnBuscar = new javax.swing.JButton();
         btnMostrarTodo = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setText("GESTIÓN DE USUARIOS");
+        jScrollPane1.setForeground(new java.awt.Color(0, 51, 102));
 
         tblUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -57,107 +61,84 @@ public class VistaGestionUsuarios extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblUsuarios);
 
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 460, 230));
+
+        btnSuspender.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Suspender.png"))); // NOI18N
         btnSuspender.setText("Suspender");
+        btnSuspender.addActionListener(this::btnSuspenderActionPerformed);
+        getContentPane().add(btnSuspender, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 340, 150, 20));
 
+        btnVolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/volver.png"))); // NOI18N
         btnVolver.setText("Volver");
+        getContentPane().add(btnVolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 390, 90, 30));
 
+        btnActivar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Activar.png"))); // NOI18N
         btnActivar.setText("Activar");
+        getContentPane().add(btnActivar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 310, 150, 20));
 
-        btnRegistrarAdmin.setText("Registrar Administrador");
+        btnRegistrarAdmin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/RegistrarAdmin.png"))); // NOI18N
+        btnRegistrarAdmin.setText("Registrar Admin");
+        btnRegistrarAdmin.addActionListener(this::btnRegistrarAdminActionPerformed);
+        getContentPane().add(btnRegistrarAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 210, 150, 30));
 
+        btnModificarDatos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/ModificarDatos.png"))); // NOI18N
         btnModificarDatos.setText("Modificar Datos");
+        getContentPane().add(btnModificarDatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 280, 150, 20));
 
         jLabel2.setText("Buscar por DNI: ");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, -1, -1));
+        getContentPane().add(txtFiltroDni, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, 110, -1));
 
         jLabel3.setText("Estado :");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 110, 50, -1));
 
         cboEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Suspendido", "Todos" }));
         cboEstado.addActionListener(this::cboEstadoActionPerformed);
+        getContentPane().add(cboEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 110, 156, -1));
 
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/buscar.png"))); // NOI18N
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(this::btnBuscarActionPerformed);
+        getContentPane().add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 110, 80, 30));
 
+        btnMostrarTodo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/MostrarTodo.png"))); // NOI18N
         btnMostrarTodo.setText("Mostrar todo");
+        btnMostrarTodo.addActionListener(this::btnMostrarTodoActionPerformed);
+        getContentPane().add(btnMostrarTodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 410, 120, 30));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(114, 114, 114)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 591, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(82, 82, 82)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(txtFiltroDni, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(66, 66, 66)
-                                    .addComponent(cboEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(124, 124, 124)
-                        .addComponent(btnMostrarTodo, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSuspender, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnActivar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(183, 183, 183))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(348, 348, 348)
-                        .addComponent(btnRegistrarAdmin))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(372, 372, 372)
-                        .addComponent(btnModificarDatos))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(404, 404, 404)
-                        .addComponent(btnVolver))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(372, 372, 372)
-                        .addComponent(jLabel1)))
+        jPanel1.setBackground(new java.awt.Color(0, 51, 102));
+
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("GESTIÓN DE USUARIOS");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(236, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(211, 211, 211))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtFiltroDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(cboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnActivar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSuspender))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnBuscar)
-                            .addComponent(btnMostrarTodo))
-                        .addGap(58, 58, 58)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(97, 97, 97)
-                        .addComponent(btnRegistrarAdmin)))
-                .addGap(30, 30, 30)
-                .addComponent(btnModificarDatos)
-                .addGap(36, 36, 36)
-                .addComponent(btnVolver)
-                .addGap(38, 38, 38))
-        );
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, 80));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        jLabel4.setText("USUARIOS ACTIVOS:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 260, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        jLabel5.setText("NUEVO ADMIN:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 190, -1, 20));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -169,6 +150,18 @@ public class VistaGestionUsuarios extends javax.swing.JFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnMostrarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarTodoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnMostrarTodoActionPerformed
+
+    private void btnRegistrarAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarAdminActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRegistrarAdminActionPerformed
+
+    private void btnSuspenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuspenderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSuspenderActionPerformed
 
     /**
      * @param args the command line arguments
@@ -207,6 +200,9 @@ public class VistaGestionUsuarios extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JTable tblUsuarios;
     public javax.swing.JTextField txtFiltroDni;

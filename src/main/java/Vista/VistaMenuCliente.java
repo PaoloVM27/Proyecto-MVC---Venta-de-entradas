@@ -28,86 +28,84 @@ public class VistaMenuCliente extends javax.swing.JFrame {
     private void initComponents() {
 
         jToggleButton2 = new javax.swing.JToggleButton();
-        jLabel1 = new javax.swing.JLabel();
         lblBienvenida = new javax.swing.JLabel();
         btnComprar = new javax.swing.JToggleButton();
         btnMisEntradas = new javax.swing.JButton();
         btnCerrarSesion = new javax.swing.JButton();
         btnMetodoPago = new javax.swing.JButton();
         btnPerfilCliente = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
 
         jToggleButton2.setText("jToggleButton2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setText("MENU CLIENTE");
-
+        lblBienvenida.setFont(new java.awt.Font("Segoe UI Black", 2, 16)); // NOI18N
         lblBienvenida.setText("BIENVENIDO");
+        getContentPane().add(lblBienvenida, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 120, -1, -1));
 
+        btnComprar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/ComprarEntradas.png"))); // NOI18N
         btnComprar.setText("Comprar Entradas");
         btnComprar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnComprarActionPerformed(evt);
             }
         });
+        getContentPane().add(btnComprar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 170, 270, 30));
 
+        btnMisEntradas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/MisEntradas.png"))); // NOI18N
         btnMisEntradas.setText("Mis Entradas");
         btnMisEntradas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMisEntradasActionPerformed(evt);
             }
         });
+        getContentPane().add(btnMisEntradas, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 220, 270, 30));
 
+        btnCerrarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Cerrar sesión.png"))); // NOI18N
         btnCerrarSesion.setText("Cerrar Sesión");
+        getContentPane().add(btnCerrarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 370, 120, 30));
 
+        btnMetodoPago.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/MetodoPago.png"))); // NOI18N
         btnMetodoPago.setText("Método de Pago");
         btnMetodoPago.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMetodoPagoActionPerformed(evt);
             }
         });
+        getContentPane().add(btnMetodoPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 270, 270, 30));
 
+        btnPerfilCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Miperfil.png"))); // NOI18N
         btnPerfilCliente.setText("Mi perfil");
+        getContentPane().add(btnPerfilCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 370, 100, 30));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(166, 166, 166)
+        jPanel1.setBackground(new java.awt.Color(0, 51, 102));
+
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("MENU CLIENTE");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(268, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(135, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblBienvenida)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnComprar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnMisEntradas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnMetodoPago, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnPerfilCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(140, 140, 140))
+                .addGap(264, 264, 264))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(29, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(23, 23, 23)
-                .addComponent(lblBienvenida)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnComprar)
-                .addGap(18, 18, 18)
-                .addComponent(btnMisEntradas)
-                .addGap(18, 18, 18)
-                .addComponent(btnCerrarSesion)
-                .addGap(18, 18, 18)
-                .addComponent(btnMetodoPago)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnPerfilCliente)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addGap(31, 31, 31))
         );
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, 90));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -166,6 +164,7 @@ public class VistaMenuCliente extends javax.swing.JFrame {
     public javax.swing.JButton btnMisEntradas;
     public javax.swing.JButton btnPerfilCliente;
     public javax.swing.JLabel jLabel1;
+    public javax.swing.JPanel jPanel1;
     public javax.swing.JToggleButton jToggleButton2;
     public javax.swing.JLabel lblBienvenida;
     // End of variables declaration//GEN-END:variables

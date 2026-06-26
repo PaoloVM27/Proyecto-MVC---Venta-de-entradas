@@ -28,6 +28,8 @@ public class ControladorMenuCliente {
             vistaMenu.lblBienvenida.setText("Bienvenido, " + auth.getClienteActual().getNombres());
         }
 
+        vistaMenu.setSize(700, 520);
+        vistaMenu.setResizable(false);
         vistaMenu.setLocationRelativeTo(null);
         vistaMenu.setVisible(true);
     }
@@ -77,6 +79,8 @@ public class ControladorMenuCliente {
 
         vistaLogin.txtDni.setText("");
         vistaLogin.txtContrasena.setText("");
+        vistaLogin.setSize(700, 520);
+        vistaLogin.setResizable(false);
         vistaLogin.setLocationRelativeTo(null);
         vistaLogin.setVisible(true);
     }

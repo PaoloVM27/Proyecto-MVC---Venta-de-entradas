@@ -28,70 +28,64 @@ public class VistaMenuAdmin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         lblBienvenida = new javax.swing.JLabel();
         btnGenerarConcierto = new javax.swing.JButton();
         btnCerrarSesion = new javax.swing.JButton();
         btnGestionVentas = new javax.swing.JButton();
         btnGestionUsuarios = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setText("MENU ADMINISTRADOR");
-
+        lblBienvenida.setFont(new java.awt.Font("Segoe UI Black", 2, 14)); // NOI18N
         lblBienvenida.setText("BIENVENIDO");
+        getContentPane().add(lblBienvenida, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 140, -1, -1));
 
+        btnGenerarConcierto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/GenerarConcierto.png"))); // NOI18N
         btnGenerarConcierto.setText("Generar Concierto");
         btnGenerarConcierto.addActionListener(this::btnGenerarConciertoActionPerformed);
+        getContentPane().add(btnGenerarConcierto, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 320, 190, 30));
 
+        btnCerrarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Cerrar sesión.png"))); // NOI18N
         btnCerrarSesion.setText("Cerrar Sesion");
+        getContentPane().add(btnCerrarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 400, 126, 30));
 
+        btnGestionVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/GestionVentas.png"))); // NOI18N
         btnGestionVentas.setText("Gestión de Ventas");
         btnGestionVentas.addActionListener(this::btnGestionVentasActionPerformed);
+        getContentPane().add(btnGestionVentas, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 260, 190, 30));
 
+        btnGestionUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/GestionUsuarios.png"))); // NOI18N
         btnGestionUsuarios.setText("Gestión de Usuarios");
+        getContentPane().add(btnGestionUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 200, 190, 30));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(217, 217, 217)
-                        .addComponent(lblBienvenida))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(195, 195, 195)
-                        .addComponent(btnCerrarSesion))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(177, 177, 177)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnGenerarConcierto)
-                            .addComponent(btnGestionVentas)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(187, 187, 187)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnGestionUsuarios)
-                            .addComponent(jLabel1))))
-                .addContainerGap(220, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+        jPanel1.setBackground(new java.awt.Color(0, 51, 102));
+
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("MENU ADMINISTRADOR");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(251, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(lblBienvenida)
-                .addGap(42, 42, 42)
-                .addComponent(btnGestionUsuarios)
-                .addGap(43, 43, 43)
-                .addComponent(btnGestionVentas)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnGenerarConcierto)
-                .addGap(29, 29, 29)
-                .addComponent(btnCerrarSesion)
-                .addContainerGap(238, Short.MAX_VALUE))
+                .addGap(226, 226, 226))
         );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addComponent(jLabel1)
+                .addContainerGap(45, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -135,6 +129,7 @@ public class VistaMenuAdmin extends javax.swing.JFrame {
     public javax.swing.JButton btnGestionUsuarios;
     public javax.swing.JButton btnGestionVentas;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     public javax.swing.JLabel lblBienvenida;
     // End of variables declaration//GEN-END:variables
 }

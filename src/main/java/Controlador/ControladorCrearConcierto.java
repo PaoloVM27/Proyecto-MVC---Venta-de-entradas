@@ -25,6 +25,8 @@ public class ControladorCrearConcierto {
     }
 
     public void iniciar() {
+        vista.setSize(700, 520);
+        vista.setResizable(false);
         vista.setLocationRelativeTo(null);
         vista.setVisible(true);
     }
@@ -72,6 +74,8 @@ public class ControladorCrearConcierto {
 
     private void volver() {
         vista.dispose();
+        vistaMenuAdmin.setSize(700, 520);
+        vistaMenuAdmin.setResizable(false);
         vistaMenuAdmin.setLocationRelativeTo(null);
         vistaMenuAdmin.setVisible(true);
     }
