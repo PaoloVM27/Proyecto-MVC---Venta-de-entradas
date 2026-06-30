@@ -1,17 +1,16 @@
 package Servicios;
 
 import Modelo.Cliente;
+import Modelo.Persona;
 import Modelo.Usuario;
 import Persistencia.ArchivoCliente;
 import Persistencia.ArchivoUsuario;
 
 public class Autenticacion {
-    private static Cliente[] clientes;
-    private static int numClientes;
-    private static Usuario[] usuarios;
-    private static int numUsuarios;
+    private static Persona[] personas;
+    private static int numPersonas;
     private static boolean cargado = false;
-    
+
     private Cliente clienteActual;
     private Usuario usuarioActual;
     private ArchivoCliente archivoCliente;
@@ -22,174 +21,99 @@ public class Autenticacion {
         this.archivoUsuario = new ArchivoUsuario();
 
         if (!cargado) {
+            personas = new Persona[10];
+            numPersonas = 0;
+
             Cliente[] clientesCargados = archivoCliente.cargarClientes();
             if (clientesCargados != null) {
-                clientes = new Cliente[Math.max(10, clientesCargados.length * 2)];
-                numClientes = clientesCargados.length;
                 for (int i = 0; i < clientesCargados.length; i++) {
-                    clientes[i] = clientesCargados[i];
+                    if (numPersonas >= personas.length) redimensionar();
+                    personas[numPersonas++] = clientesCargados[i];
                 }
-            } else {
-                clientes = new Cliente[10];
-                numClientes = 0;
             }
 
             Usuario[] usuariosCargados = archivoUsuario.cargarUsuarios();
             if (usuariosCargados != null) {
-                usuarios = new Usuario[Math.max(10, usuariosCargados.length * 2)];
-                numUsuarios = usuariosCargados.length;
                 for (int i = 0; i < usuariosCargados.length; i++) {
-                    usuarios[i] = usuariosCargados[i];
+                    if (numPersonas >= personas.length) redimensionar();
+                    personas[numPersonas++] = usuariosCargados[i];
                 }
-            } else {
-                usuarios = new Usuario[10];
-                numUsuarios = 0;
             }
 
-            if (buscarUsuarioPorDni("11223344") == null) {
-                if (numUsuarios >= usuarios.length) {
-                    redimensionarUsuarios();
-                }
-                usuarios[numUsuarios] = new Usuario("Admin", "Administrador", "11223344", "admin123");
-                numUsuarios++;
-                archivoUsuario.guardarUsuarios(usuarios, numUsuarios);
-            }
             cargado = true;
         }
 
         this.clienteActual = null;
         this.usuarioActual = null;
     }
-    
-    private void redimensionarClientes() {
-        Cliente[] nuevoArreglo = new Cliente[clientes.length * 2];
-        for (int i = 0; i < numClientes; i++) {
-            nuevoArreglo[i] = clientes[i];
+
+    private void redimensionar() {
+        Persona[] nuevo = new Persona[personas.length * 2];
+        for (int i = 0; i < numPersonas; i++) {
+            nuevo[i] = personas[i];
         }
-        clientes = nuevoArreglo;
-    }
-    
-    private void redimensionarUsuarios() {
-        Usuario[] nuevoArreglo = new Usuario[usuarios.length * 2];
-        for (int i = 0; i < numUsuarios; i++) {
-            nuevoArreglo[i] = usuarios[i];
-        }
-        usuarios = nuevoArreglo;
+        personas = nuevo;
     }
 
     public boolean registrarCliente(String nombres, String apellidos, String dni, String contrasena) {
-        if (nombres == null || nombres.isEmpty()) {
-            return false;
-        }
+        if (nombres == null || nombres.isEmpty()) return false;
+        if (apellidos == null || apellidos.isEmpty()) return false;
+        if (dni == null || dni.isEmpty()) return false;
+        if (contrasena == null || contrasena.isEmpty()) return false;
+        if (buscarClientePorDni(dni) != null) return false;
+        if (buscarUsuarioPorDni(dni) != null) return false;
 
-        if (apellidos == null || apellidos.isEmpty()) {
-            return false;
-        }
-
-        if (dni == null || dni.isEmpty()) {
-            return false;
-        }
-
-        if (contrasena == null || contrasena.isEmpty()) {
-            return false;
-        }
-
-        if (buscarClientePorDni(dni) != null) {
-            return false;
-        }
-
-        if (numClientes >= clientes.length) {
-            redimensionarClientes();
-        }
-
+        if (numPersonas >= personas.length) redimensionar();
         Cliente nuevoCliente = new Cliente(nombres, apellidos, dni, contrasena);
-        clientes[numClientes] = nuevoCliente;
-        numClientes++;
+        personas[numPersonas++] = nuevoCliente;
 
-        boolean guardado = archivoCliente.guardarClientes(clientes, numClientes);
-
+        boolean guardado = guardarClientes();
         if (!guardado) {
-            clientes[numClientes - 1] = null;
-            numClientes--;
+            personas[--numPersonas] = null;
             return false;
         }
-
         return true;
     }
 
     public boolean registrarUsuario(String nombres, String apellidos, String dni, String contrasena) {
-        if (nombres == null || nombres.isEmpty()) {
-            return false;
-        }
+        if (nombres == null || nombres.isEmpty()) return false;
+        if (apellidos == null || apellidos.isEmpty()) return false;
+        if (dni == null || dni.isEmpty()) return false;
+        if (contrasena == null || contrasena.isEmpty()) return false;
+        if (buscarUsuarioPorDni(dni) != null) return false;
+        if (buscarClientePorDni(dni) != null) return false;
 
-        if (apellidos == null || apellidos.isEmpty()) {
-            return false;
-        }
-
-        if (dni == null || dni.isEmpty()) {
-            return false;
-        }
-
-        if (contrasena == null || contrasena.isEmpty()) {
-            return false;
-        }
-
-        if (buscarUsuarioPorDni(dni) != null) {
-            return false;
-        }
-
-        if (buscarClientePorDni(dni) != null) {
-            return false;
-        }
-
-        if (numUsuarios >= usuarios.length) {
-            redimensionarUsuarios();
-        }
-
+        if (numPersonas >= personas.length) redimensionar();
         Usuario nuevoUsuario = new Usuario(nombres, apellidos, dni, contrasena);
-        usuarios[numUsuarios] = nuevoUsuario;
-        numUsuarios++;
+        personas[numPersonas++] = nuevoUsuario;
 
-        boolean guardado = archivoUsuario.guardarUsuarios(usuarios, numUsuarios);
-
+        boolean guardado = guardarUsuarios();
         if (!guardado) {
-            usuarios[numUsuarios - 1] = null;
-            numUsuarios--;
+            personas[--numPersonas] = null;
             return false;
         }
-
         return true;
     }
 
     public boolean iniciarSesionCliente(String dni, String contrasena) {
         Cliente cliente = buscarClientePorDni(dni);
-
-        if (cliente == null) {
-            return false;
-        }
-
+        if (cliente == null) return false;
         if (cliente.ingresar(dni, contrasena)) {
             clienteActual = cliente;
             usuarioActual = null;
             return true;
         }
-
         return false;
     }
 
     public boolean iniciarSesionUsuario(String dni, String contrasena) {
         Usuario usuario = buscarUsuarioPorDni(dni);
-
-        if (usuario == null) {
-            return false;
-        }
-
+        if (usuario == null) return false;
         if (usuario.ingresar(dni, contrasena)) {
             usuarioActual = usuario;
             clienteActual = null;
             return true;
         }
-
         return false;
     }
 
@@ -199,29 +123,33 @@ public class Autenticacion {
     }
 
     public Cliente buscarClientePorDni(String dni) {
-        for (int i = 0; i < numClientes; i++) {
-            if (clientes[i].getDni().equals(dni)) {
-                return clientes[i];
+        for (int i = 0; i < numPersonas; i++) {
+            if (personas[i] instanceof Cliente) {
+                Cliente c = (Cliente) personas[i];
+                if (c.getDni().equals(dni)) return c;
             }
         }
         return null;
     }
 
     public Usuario buscarUsuarioPorDni(String dni) {
-        for (int i = 0; i < numUsuarios; i++) {
-            if (usuarios[i].getDni().equals(dni)) {
-                return usuarios[i];
+        for (int i = 0; i < numPersonas; i++) {
+            if (personas[i] instanceof Usuario) {
+                Usuario u = (Usuario) personas[i];
+                if (u.getDni().equals(dni)) return u;
             }
         }
         return null;
     }
 
     public boolean guardarClientes() {
-        return archivoCliente.guardarClientes(clientes, numClientes);
+        Cliente[] arr = getClientes();
+        return archivoCliente.guardarClientes(arr, arr.length);
     }
 
     public boolean guardarUsuarios() {
-        return archivoUsuario.guardarUsuarios(usuarios, numUsuarios);
+        Usuario[] arr = getUsuarios();
+        return archivoUsuario.guardarUsuarios(arr, arr.length);
     }
 
     public Cliente getClienteActual() {
@@ -233,26 +161,44 @@ public class Autenticacion {
     }
 
     public Cliente[] getClientes() {
-        Cliente[] resultado = new Cliente[numClientes];
-        for (int i = 0; i < numClientes; i++) {
-            resultado[i] = clientes[i];
+        int count = 0;
+        for (int i = 0; i < numPersonas; i++) {
+            if (personas[i] instanceof Cliente) count++;
         }
-        return resultado;
+        Cliente[] result = new Cliente[count];
+        int idx = 0;
+        for (int i = 0; i < numPersonas; i++) {
+            if (personas[i] instanceof Cliente) result[idx++] = (Cliente) personas[i];
+        }
+        return result;
     }
 
     public int getNumClientes() {
-        return numClientes;
+        int count = 0;
+        for (int i = 0; i < numPersonas; i++) {
+            if (personas[i] instanceof Cliente) count++;
+        }
+        return count;
     }
 
     public Usuario[] getUsuarios() {
-        Usuario[] resultado = new Usuario[numUsuarios];
-        for (int i = 0; i < numUsuarios; i++) {
-            resultado[i] = usuarios[i];
+        int count = 0;
+        for (int i = 0; i < numPersonas; i++) {
+            if (personas[i] instanceof Usuario) count++;
         }
-        return resultado;
+        Usuario[] result = new Usuario[count];
+        int idx = 0;
+        for (int i = 0; i < numPersonas; i++) {
+            if (personas[i] instanceof Usuario) result[idx++] = (Usuario) personas[i];
+        }
+        return result;
     }
 
     public int getNumUsuarios() {
-        return numUsuarios;
+        int count = 0;
+        for (int i = 0; i < numPersonas; i++) {
+            if (personas[i] instanceof Usuario) count++;
+        }
+        return count;
     }
 }
