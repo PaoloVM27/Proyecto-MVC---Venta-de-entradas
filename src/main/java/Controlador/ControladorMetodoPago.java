@@ -1,6 +1,6 @@
 package Controlador;
 
-import Modelo.ArregloCliente;
+import Modelo.ArregloTarjetas;
 import Modelo.Cliente;
 import Modelo.Tarjeta;
 import Servicios.Autenticacion;
@@ -12,14 +12,15 @@ public class ControladorMetodoPago {
     private VistaMetodoPago vistaMetodoPago;
     private VistaMenuCliente vistaMenu;
     private Autenticacion auth;
-    private ArregloCliente arregloCliente;
+    private ArregloTarjetas arregloTarjetas;
+    private int filaSeleccionada = -1;
 
     public ControladorMetodoPago(VistaMetodoPago vistaMetodoPago, VistaMenuCliente vistaMenu, Autenticacion auth) {
         this.vistaMetodoPago = vistaMetodoPago;
         this.vistaMenu = vistaMenu;
         this.auth = auth;
 
-        this.arregloCliente = new ArregloCliente(
+        this.arregloTarjetas = new ArregloTarjetas(
                 auth.getClienteActual(),
                 auth.getClientes(),
                 auth.getNumClientes()
@@ -31,7 +32,36 @@ public class ControladorMetodoPago {
     }
 
     public void iniciar() {
-        cargarTarjetaGuardada();
+        cargarTabla();
+
+        javax.swing.JTable tabla = obtenerTabla();
+        if (tabla != null) {
+            tabla.getSelectionModel().addListSelectionListener(listEvent -> {
+                if (!listEvent.getValueIsAdjusting()) {
+                    tarjetaSeleccionadaModificada();
+                }
+            });
+
+            tabla.addMouseListener(new java.awt.event.MouseAdapter() {
+                private int lastSelectedRow = -2;
+
+                @Override
+                public void mousePressed(java.awt.event.MouseEvent e) {
+                    int row = tabla.rowAtPoint(e.getPoint());
+                    if (row == -1) {
+                        tabla.clearSelection();
+                        lastSelectedRow = -2;
+                    } else {
+                        if (row == lastSelectedRow) {
+                            tabla.clearSelection();
+                            lastSelectedRow = -2;
+                        } else {
+                            lastSelectedRow = row;
+                        }
+                    }
+                }
+            });
+        }
 
         vistaMetodoPago.setSize(700, 520);
         vistaMetodoPago.setResizable(false);
@@ -39,30 +69,105 @@ public class ControladorMetodoPago {
         vistaMetodoPago.setVisible(true);
     }
 
-    private void cargarTarjetaGuardada() {
-        Cliente cliente = auth.getClienteActual();
+    private void tarjetaSeleccionadaModificada() {
+        javax.swing.JTable tabla = obtenerTabla();
+        if (tabla == null) return;
 
-        if (cliente == null) {
-            mostrarMensaje("No hay cliente logueado.");
-            volverMenu();
-            return;
-        }
+        int fila = tabla.getSelectedRow();
+        this.filaSeleccionada = fila;
 
-        Tarjeta tarjeta = cliente.getTarjeta();
-
-        if (tarjeta == null) {
+        if (fila == -1) {
             limpiarCampos();
-            vistaMetodoPago.lblEstado.setText("Estado: No tienes tarjeta guardada.");
             return;
         }
 
-        vistaMetodoPago.txtNumeroTarjeta.setText(String.valueOf(tarjeta.getNumero()));
-        vistaMetodoPago.txtNombreTarjeta.setText(tarjeta.getNombre());
-        vistaMetodoPago.txtFechaTarjeta.setText(tarjeta.getFecha());
-        vistaMetodoPago.txtCvv.setText(String.valueOf(tarjeta.getCvv()));
-        vistaMetodoPago.txtSaldo.setText(String.valueOf(tarjeta.getSaldo()));
+        Tarjeta[] tarjetas = arregloTarjetas.listarTarjetas();
+        if (tarjetas != null && fila < tarjetas.length) {
+            Tarjeta t = tarjetas[fila];
+            if (t != null) {
+                vistaMetodoPago.txtNumeroTarjeta.setText(String.valueOf(t.getNumero()));
+                vistaMetodoPago.txtNombreTarjeta.setText(t.getNombre());
+                vistaMetodoPago.txtFechaTarjeta.setText(t.getFecha());
+                vistaMetodoPago.txtCvv.setText(String.valueOf(t.getCvv()));
 
-        vistaMetodoPago.lblEstado.setText("Estado: Tarjeta guardada.");
+                String numStr = String.valueOf(t.getNumero());
+                javax.swing.JComboBox<String> combo = obtenerComboBox();
+                if (combo != null) {
+                    for (int i = 0; i < combo.getItemCount(); i++) {
+                        String item = combo.getItemAt(i);
+                        if (item.equalsIgnoreCase("Visa") && numStr.startsWith("4")) {
+                            combo.setSelectedIndex(i);
+                            break;
+                        } else if (item.equalsIgnoreCase("Mastercard") && (numStr.startsWith("5") || numStr.startsWith("2"))) {
+                            combo.setSelectedIndex(i);
+                            break;
+                        } else if (item.equalsIgnoreCase("American Express") && numStr.startsWith("3") && numStr.length() == 15) {
+                            combo.setSelectedIndex(i);
+                            break;
+                        } else if (item.equalsIgnoreCase("Diners Club") && numStr.startsWith("3") && numStr.length() == 14) {
+                            combo.setSelectedIndex(i);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void cargarTabla() {
+        javax.swing.JTable tabla = obtenerTabla();
+        if (tabla == null) {
+            return;
+        }
+
+        javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(
+            new String[]{"Tipo", "Número", "Titular", "Vencimiento"},
+            0
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        Tarjeta[] tarjetas = arregloTarjetas.listarTarjetas();
+        if (tarjetas != null) {
+            for (Tarjeta t : tarjetas) {
+                if (t != null) {
+                    String numStr = String.valueOf(t.getNumero());
+                    String numOculto = "";
+                    if (numStr.length() > 4) {
+                        int asteriscos = numStr.length() - 4;
+                        for (int i = 0; i < asteriscos; i++) {
+                            numOculto += "*";
+                        }
+                        numOculto += numStr.substring(asteriscos);
+                    } else {
+                        numOculto = numStr;
+                    }
+
+                    String tipo = "Desconocido";
+                    if (numStr.startsWith("4") && numStr.length() == 16) {
+                        tipo = "Visa";
+                    } else if ((numStr.startsWith("5") || numStr.startsWith("2")) && numStr.length() == 16) {
+                        tipo = "Mastercard";
+                    } else if (numStr.startsWith("3") && numStr.length() == 15) {
+                        tipo = "American Express";
+                    } else if (numStr.startsWith("3") && numStr.length() == 14) {
+                        tipo = "Diners Club";
+                    }
+
+                    modelo.addRow(new Object[]{
+                        tipo,
+                        numOculto,
+                        t.getNombre(),
+                        t.getFecha()
+                    });
+                }
+            }
+        }
+
+        tabla.setModel(modelo);
     }
 
     private void guardarTarjeta() {
@@ -78,57 +183,144 @@ public class ControladorMetodoPago {
             String nombre = vistaMetodoPago.txtNombreTarjeta.getText().trim();
             String fecha = vistaMetodoPago.txtFechaTarjeta.getText().trim();
             String cvvTexto = vistaMetodoPago.txtCvv.getText().trim();
-            String saldoTexto = vistaMetodoPago.txtSaldo.getText().trim();
 
             if (numeroTexto.isEmpty() || nombre.isEmpty() || fecha.isEmpty()
-                    || cvvTexto.isEmpty() || saldoTexto.isEmpty()) {
+                    || cvvTexto.isEmpty()) {
                 mostrarMensaje("Completa todos los datos de la tarjeta.");
                 return;
             }
 
-            int numero = Integer.parseInt(numeroTexto);
-            int cvv = Integer.parseInt(cvvTexto);
-            double saldo = Double.parseDouble(saldoTexto);
-
-            boolean registrada = arregloCliente.registrarTarjeta(
-                    numero,
-                    nombre,
-                    fecha,
-                    cvv,
-                    saldo
-            );
-
-            if (!registrada) {
-                mostrarMensaje("No se pudo guardar la tarjeta. Revisa los datos.");
+            if (!numeroTexto.matches("\\d+")) {
+                mostrarMensaje("El número de tarjeta debe contener solo dígitos.");
+                return;
+            }
+            if (!cvvTexto.matches("\\d+")) {
+                mostrarMensaje("El CVV/CID debe contener solo dígitos.");
                 return;
             }
 
-            mostrarMensaje("Tarjeta guardada correctamente.");
-            cargarTarjetaGuardada();
+            javax.swing.JComboBox<String> combo = obtenerComboBox();
+            String tipo = (combo != null && combo.getSelectedItem() != null) ? combo.getSelectedItem().toString() : "";
+            boolean esValida = false;
+            String recordatorio = "";
+
+            if (tipo.equalsIgnoreCase("Visa")) {
+                if (numeroTexto.startsWith("4") && numeroTexto.length() == 16 && cvvTexto.length() == 3) {
+                    esValida = true;
+                } else {
+                    recordatorio = "Recordatorio de especificaciones para Visa:\n"
+                            + "- El número debe comenzar con 4.\n"
+                            + "- Debe tener exactamente 16 dígitos.\n"
+                            + "- El código de seguridad (CVV) debe tener exactamente 3 dígitos.";
+                }
+            } else if (tipo.equalsIgnoreCase("Mastercard")) {
+                if ((numeroTexto.startsWith("5") || numeroTexto.startsWith("2")) && numeroTexto.length() == 16 && cvvTexto.length() == 3) {
+                    esValida = true;
+                } else {
+                    recordatorio = "Recordatorio de especificaciones para Mastercard:\n"
+                            + "- El número debe comenzar con 5 o 2.\n"
+                            + "- Debe tener exactamente 16 dígitos.\n"
+                            + "- El código de seguridad (CVV) debe tener exactamente 3 dígitos.";
+                }
+            } else if (tipo.equalsIgnoreCase("American Express")) {
+                if (numeroTexto.startsWith("3") && numeroTexto.length() == 15 && cvvTexto.length() == 4) {
+                    esValida = true;
+                } else {
+                    recordatorio = "Recordatorio de especificaciones para American Express:\n"
+                            + "- El número debe comenzar con 3.\n"
+                            + "- Debe tener exactamente 15 dígitos.\n"
+                            + "- El código de seguridad (CID) debe tener exactamente 4 dígitos.";
+                }
+            } else if (tipo.equalsIgnoreCase("Diners Club")) {
+                if (numeroTexto.startsWith("3") && numeroTexto.length() == 14 && cvvTexto.length() == 3) {
+                    esValida = true;
+                } else {
+                    recordatorio = "Recordatorio de especificaciones para Diners Club:\n"
+                            + "- El número debe comenzar con 3.\n"
+                            + "- Debe tener exactamente 14 dígitos.\n"
+                            + "- El código de seguridad (CVV) debe tener exactamente 3 dígitos.";
+                }
+            }
+
+            if (!esValida) {
+                mostrarMensaje("Datos de tarjeta inválidos.\n\n" + recordatorio);
+                return;
+            }
+
+            long numero = Long.parseLong(numeroTexto);
+            int cvv = Integer.parseInt(cvvTexto);
+            double saldo = 0.0;
+
+            boolean operacionExitosa;
+            String mensajeExito;
+
+            if (this.filaSeleccionada != -1) {
+                operacionExitosa = arregloTarjetas.actualizarTarjeta(
+                        this.filaSeleccionada,
+                        numero,
+                        nombre,
+                        fecha,
+                        cvv,
+                        saldo
+                );
+                mensajeExito = "Tarjeta actualizada correctamente.";
+            } else {
+                operacionExitosa = arregloTarjetas.registrarTarjeta(
+                        numero,
+                        nombre,
+                        fecha,
+                        cvv,
+                        saldo
+                );
+                mensajeExito = "Tarjeta guardada correctamente.";
+            }
+
+            if (!operacionExitosa) {
+                mostrarMensaje("No se pudo procesar la tarjeta. Revisa los datos o puede que ya esté registrada.");
+                return;
+            }
+
+            mostrarMensaje(mensajeExito);
+            
+            javax.swing.JTable tabla = obtenerTabla();
+            if (tabla != null) {
+                tabla.clearSelection();
+            }
+            limpiarCampos();
+            cargarTabla();
 
         } catch (NumberFormatException e) {
-            mostrarMensaje("Número de tarjeta, CVV y saldo deben ser valores numéricos.");
+            mostrarMensaje("Número de tarjeta y CVV deben ser valores numéricos.");
         } catch (Exception e) {
             mostrarMensaje(e.getMessage());
         }
     }
 
     private void eliminarTarjeta() {
-        Cliente cliente = auth.getClienteActual();
-
-        if (cliente == null) {
-            mostrarMensaje("No hay cliente logueado.");
+        javax.swing.JTable tabla = obtenerTabla();
+        if (tabla == null) {
             return;
         }
 
-        if (cliente.getTarjeta() == null) {
-            mostrarMensaje("No tienes tarjeta guardada.");
+        int fila = tabla.getSelectedRow();
+        if (fila == -1) {
+            mostrarMensaje("Selecciona una tarjeta de la tabla para eliminar.");
+            return;
+        }
+
+        Tarjeta[] tarjetas = arregloTarjetas.listarTarjetas();
+        if (tarjetas == null || fila >= tarjetas.length) {
+            return;
+        }
+
+        Tarjeta tarjetaAEliminar = tarjetas[fila];
+        if (tarjetaAEliminar == null) {
             return;
         }
 
         int opcion = JOptionPane.showConfirmDialog(
                 vistaMetodoPago,
-                "¿Seguro que deseas eliminar tu tarjeta guardada?",
+                "¿Seguro que deseas eliminar la tarjeta seleccionada?",
                 "Confirmar eliminación",
                 JOptionPane.YES_NO_OPTION
         );
@@ -137,7 +329,7 @@ public class ControladorMetodoPago {
             return;
         }
 
-        boolean eliminada = arregloCliente.eliminarTarjeta();
+        boolean eliminada = arregloTarjetas.eliminarTarjeta(tarjetaAEliminar.getNumero());
 
         if (!eliminada) {
             mostrarMensaje("No se pudo eliminar la tarjeta.");
@@ -145,7 +337,7 @@ public class ControladorMetodoPago {
         }
 
         limpiarCampos();
-        vistaMetodoPago.lblEstado.setText("Estado: No tienes tarjeta guardada.");
+        cargarTabla();
         mostrarMensaje("Tarjeta eliminada correctamente.");
     }
 
@@ -154,7 +346,6 @@ public class ControladorMetodoPago {
         vistaMetodoPago.txtNombreTarjeta.setText("");
         vistaMetodoPago.txtFechaTarjeta.setText("");
         vistaMetodoPago.txtCvv.setText("");
-        vistaMetodoPago.txtSaldo.setText("");
     }
 
     private void volverMenu() {
@@ -168,5 +359,39 @@ public class ControladorMetodoPago {
 
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(vistaMetodoPago, mensaje);
+    }
+
+    private javax.swing.JTable obtenerTabla() {
+        try {
+            java.lang.reflect.Field field = vistaMetodoPago.getClass().getDeclaredField("jTable1");
+            field.setAccessible(true);
+            return (javax.swing.JTable) field.get(vistaMetodoPago);
+        } catch (Exception ex) {
+            for (java.awt.Component comp : vistaMetodoPago.getContentPane().getComponents()) {
+                if (comp instanceof javax.swing.JScrollPane) {
+                    javax.swing.JScrollPane sp = (javax.swing.JScrollPane) comp;
+                    if (sp.getViewport().getView() instanceof javax.swing.JTable) {
+                        return (javax.swing.JTable) sp.getViewport().getView();
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    private javax.swing.JComboBox<String> obtenerComboBox() {
+        try {
+            java.lang.reflect.Field field = vistaMetodoPago.getClass().getDeclaredField("jComboBox1");
+            field.setAccessible(true);
+            return (javax.swing.JComboBox<String>) field.get(vistaMetodoPago);
+        } catch (Exception ex) {
+            for (java.awt.Component comp : vistaMetodoPago.getContentPane().getComponents()) {
+                if (comp instanceof javax.swing.JComboBox) {
+                    return (javax.swing.JComboBox<String>) comp;
+                }
+            }
+        }
+        return null;
     }
 }

@@ -5,20 +5,23 @@ import java.util.ArrayList;
 
 public class Cliente extends Persona implements java.io.Serializable {
     private int puntos;
-    private Tarjeta tarjeta;
+    private Tarjeta[] tarjetas;
+    private int numTarjetas;
     private boolean estado;
 
     public Cliente() {
         super();
         this.puntos = 0;
-        this.tarjeta = null;
+        this.tarjetas = new Tarjeta[10];
+        this.numTarjetas = 0;
         this.estado = true;
     }
 
     public Cliente(String nombres, String apellidos, String dni, String contrasena) {
         super(nombres, apellidos, dni, contrasena);
         this.puntos = 0;
-        this.tarjeta = null;
+        this.tarjetas = new Tarjeta[10];
+        this.numTarjetas = 0;
         this.estado = true;
     }
 
@@ -40,7 +43,7 @@ public class Cliente extends Persona implements java.io.Serializable {
         return estado;
     }
 
-    public boolean registrarTarjeta(Tarjeta tarjeta) {
+    public boolean agregarTarjeta(Tarjeta tarjeta) {
         if (tarjeta == null) {
             return false;
         }
@@ -49,21 +52,78 @@ public class Cliente extends Persona implements java.io.Serializable {
             return false;
         }
 
-        this.tarjeta = tarjeta;
+        for (int i = 0; i < numTarjetas; i++) {
+            if (tarjetas[i] != null && tarjetas[i].getNumero() == tarjeta.getNumero()) {
+                return false;
+            }
+        }
+
+        if (numTarjetas >= tarjetas.length) {
+            redimensionarTarjetas();
+        }
+
+        this.tarjetas[numTarjetas++] = tarjeta;
         return true;
+    }
+
+    private void redimensionarTarjetas() {
+        Tarjeta[] nuevo = new Tarjeta[tarjetas.length * 2];
+        for (int i = 0; i < numTarjetas; i++) {
+            nuevo[i] = tarjetas[i];
+        }
+        tarjetas = nuevo;
+    }
+
+    public boolean actualizarTarjeta(int indice, Tarjeta nuevaTarjeta) {
+        if (indice < 0 || indice >= numTarjetas || nuevaTarjeta == null) {
+            return false;
+        }
+        if (!nuevaTarjeta.validarDatos()) {
+            return false;
+        }
+        for (int i = 0; i < numTarjetas; i++) {
+            if (i != indice && tarjetas[i] != null && tarjetas[i].getNumero() == nuevaTarjeta.getNumero()) {
+                return false;
+            }
+        }
+        this.tarjetas[indice] = nuevaTarjeta;
+        return true;
+    }
+
+    public boolean registrarTarjeta(Tarjeta tarjeta) {
+        return agregarTarjeta(tarjeta);
     }
 
     @Override
     public boolean registrarTarjeta() {
-        return this.tarjeta != null && this.tarjeta.validarDatos();
+        return this.numTarjetas > 0;
     }
 
     public boolean eliminarTarjeta() {
-        if (this.tarjeta == null) {
+        if (this.numTarjetas == 0) {
+            return false;
+        }
+        this.tarjetas[--this.numTarjetas] = null;
+        return true;
+    }
+
+    public boolean eliminarTarjeta(long numero) {
+        int indice = -1;
+        for (int i = 0; i < numTarjetas; i++) {
+            if (tarjetas[i] != null && tarjetas[i].getNumero() == numero) {
+                indice = i;
+                break;
+            }
+        }
+
+        if (indice == -1) {
             return false;
         }
 
-        this.tarjeta = null;
+        for (int i = indice; i < numTarjetas - 1; i++) {
+            tarjetas[i] = tarjetas[i + 1];
+        }
+        tarjetas[--numTarjetas] = null;
         return true;
     }
 
@@ -80,6 +140,18 @@ public class Cliente extends Persona implements java.io.Serializable {
     }
 
     public Tarjeta getTarjeta() {
-        return tarjeta;
+        return numTarjetas > 0 ? tarjetas[0] : null;
+    }
+
+    public Tarjeta[] getTarjetas() {
+        Tarjeta[] activas = new Tarjeta[numTarjetas];
+        for (int i = 0; i < numTarjetas; i++) {
+            activas[i] = tarjetas[i];
+        }
+        return activas;
+    }
+
+    public int getNumTarjetas() {
+        return numTarjetas;
     }
 }

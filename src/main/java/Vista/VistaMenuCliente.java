@@ -44,7 +44,7 @@ public class VistaMenuCliente extends javax.swing.JFrame {
 
         lblBienvenida.setFont(new java.awt.Font("Segoe UI Black", 2, 16)); // NOI18N
         lblBienvenida.setText("BIENVENIDO");
-        getContentPane().add(lblBienvenida, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 120, -1, -1));
+        getContentPane().add(lblBienvenida, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 120, -1, -1));
 
         btnComprar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/ComprarEntradas.png"))); // NOI18N
         btnComprar.setText("Comprar Entradas");

@@ -15,6 +15,7 @@ public class ControladorRegistroCliente {
 
         this.vistaRegistro.btnRegistrar.addActionListener(e -> registrarCliente());
         this.vistaRegistro.btnVolver.addActionListener(e -> volverLogin());
+        this.vistaRegistro.jCheckBox1.addActionListener(e -> toggleContrasena());
     }
 
     public void iniciar() {
@@ -46,6 +47,28 @@ public class ControladorRegistroCliente {
             return;
         }
 
+        String fechaNacText = vistaRegistro.jTextField1.getText().trim();
+        if (fechaNacText.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(vistaRegistro, "Ingresa tu fecha de nacimiento.");
+            return;
+        }
+
+        java.time.LocalDate fechaNac;
+        try {
+            java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            fechaNac = java.time.LocalDate.parse(fechaNacText, formatter);
+        } catch (java.time.format.DateTimeParseException e) {
+            javax.swing.JOptionPane.showMessageDialog(vistaRegistro, "El formato de fecha de nacimiento debe ser dd/mm/aaaa.");
+            return;
+        }
+
+        java.time.LocalDate ahora = java.time.LocalDate.now();
+        int edad = java.time.Period.between(fechaNac, ahora).getYears();
+        if (edad < 18) {
+            javax.swing.JOptionPane.showMessageDialog(vistaRegistro, "Debes ser mayor de edad (18 años o más) para registrarte.");
+            return;
+        }
+
         if (contrasena.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(vistaRegistro, "Ingresa una contraseña.");
             return;
@@ -68,6 +91,7 @@ public class ControladorRegistroCliente {
             vistaRegistro.txtNombres.setText("");
             vistaRegistro.txtApellidos.setText("");
             vistaRegistro.txtDni.setText("");
+            vistaRegistro.jTextField1.setText("");
             vistaRegistro.txtContrasena.setText("");
             vistaRegistro.txtConfirmarContrasena.setText("");
             volverLogin();
@@ -82,5 +106,15 @@ public class ControladorRegistroCliente {
         vistaLogin.setResizable(false);
         vistaLogin.setLocationRelativeTo(null);
         vistaLogin.setVisible(true);
+    }
+
+    private void toggleContrasena() {
+        if (vistaRegistro.jCheckBox1.isSelected()) {
+            vistaRegistro.txtContrasena.setEchoChar((char) 0);
+            vistaRegistro.txtConfirmarContrasena.setEchoChar((char) 0);
+        } else {
+            vistaRegistro.txtContrasena.setEchoChar('*');
+            vistaRegistro.txtConfirmarContrasena.setEchoChar('*');
+        }
     }
 }

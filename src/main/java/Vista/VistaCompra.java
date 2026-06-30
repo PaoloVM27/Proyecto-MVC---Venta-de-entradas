@@ -38,8 +38,6 @@ public class VistaCompra extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         btnComprar = new javax.swing.JButton();
         btnVolver = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
@@ -47,11 +45,11 @@ public class VistaCompra extends javax.swing.JFrame {
         txtResumen = new javax.swing.JTextArea();
         txtNumeroTarjeta = new javax.swing.JTextField();
         txtNombreTarjeta = new javax.swing.JTextField();
-        txtCvv = new javax.swing.JTextField();
-        txtFechaTarjeta = new javax.swing.JTextField();
         cboConcierto = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -75,20 +73,14 @@ public class VistaCompra extends javax.swing.JFrame {
         getContentPane().add(lblMonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 220, 109, -1));
 
         jLabel1.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
-        jLabel1.setText("DATOS DE TARJETA:");
+        jLabel1.setText("Seleccionar Tarjeta:");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 110, -1, -1));
 
         jLabel2.setText("Número: ");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 150, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 190, -1, 20));
 
         jLabel3.setText("Nombre:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 180, 50, -1));
-
-        jLabel4.setText("Fecha:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 210, 49, -1));
-
-        jLabel5.setText("CVV:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 240, 37, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 230, 50, -1));
 
         btnComprar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/compra.png"))); // NOI18N
         btnComprar.setText("Comprar");
@@ -98,7 +90,7 @@ public class VistaCompra extends javax.swing.JFrame {
         btnVolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/volver.png"))); // NOI18N
         btnVolver.setText("Volver");
         btnVolver.addActionListener(this::btnVolverActionPerformed);
-        getContentPane().add(btnVolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 360, 100, 40));
+        getContentPane().add(btnVolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 350, 100, 40));
 
         jLabel7.setText("Resumen:");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 310, 59, -1));
@@ -108,12 +100,8 @@ public class VistaCompra extends javax.swing.JFrame {
         jScrollPane1.setViewportView(txtResumen);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 310, 270, 130));
-        getContentPane().add(txtNumeroTarjeta, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 150, 150, -1));
-        getContentPane().add(txtNombreTarjeta, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 180, 150, -1));
-        getContentPane().add(txtCvv, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 240, 150, -1));
-
-        txtFechaTarjeta.addActionListener(this::txtFechaTarjetaActionPerformed);
-        getContentPane().add(txtFechaTarjeta, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 210, 150, -1));
+        getContentPane().add(txtNumeroTarjeta, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 190, 150, -1));
+        getContentPane().add(txtNombreTarjeta, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 230, 150, -1));
 
         cboConcierto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboConcierto.addActionListener(this::cboConciertoActionPerformed);
@@ -130,6 +118,12 @@ public class VistaCompra extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 710, 80));
 
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 150, -1, -1));
+
+        jLabel6.setText("Tarjeta:");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 150, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -140,10 +134,6 @@ public class VistaCompra extends javax.swing.JFrame {
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnVolverActionPerformed
-
-    private void txtFechaTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaTarjetaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFechaTarjetaActionPerformed
 
     private void cboConciertoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboConciertoActionPerformed
         // TODO add your handling code here:
@@ -179,11 +169,11 @@ public class VistaCompra extends javax.swing.JFrame {
     public javax.swing.JButton btnVolver;
     public javax.swing.JComboBox<String> cboConcierto;
     public javax.swing.JComboBox<String> cboZona;
+    public javax.swing.JComboBox<String> jComboBox1;
     public javax.swing.JLabel jLabel1;
     public javax.swing.JLabel jLabel2;
     public javax.swing.JLabel jLabel3;
-    public javax.swing.JLabel jLabel4;
-    public javax.swing.JLabel jLabel5;
+    public javax.swing.JLabel jLabel6;
     public javax.swing.JLabel jLabel7;
     public javax.swing.JPanel jPanel1;
     public javax.swing.JScrollPane jScrollPane1;
@@ -193,8 +183,6 @@ public class VistaCompra extends javax.swing.JFrame {
     public javax.swing.JLabel lblTitulo;
     public javax.swing.JLabel lblZona;
     public javax.swing.JSpinner spnCantidad;
-    public javax.swing.JTextField txtCvv;
-    public javax.swing.JTextField txtFechaTarjeta;
     public javax.swing.JTextField txtNombreTarjeta;
     public javax.swing.JTextField txtNumeroTarjeta;
     public javax.swing.JTextArea txtResumen;

@@ -1,13 +1,13 @@
 package Modelo;
 
 public class Tarjeta implements java.io.Serializable {
-    private int numero;
+    private long numero;
     private String nombre;
     private String fecha;
     private int cvv;
     private double saldo;
 
-    public Tarjeta(int numero, String nombre, String fecha, int cvv, double saldo) {
+    public Tarjeta(long numero, String nombre, String fecha, int cvv, double saldo) {
         this.numero = numero;
         this.nombre = nombre;
         this.fecha = fecha;
@@ -28,7 +28,7 @@ public class Tarjeta implements java.io.Serializable {
             return false;
         }
 
-        if (cvv < 100 || cvv > 999) {
+        if (cvv < 100 || cvv > 9999) {
             return false;
         }
 
@@ -43,8 +43,7 @@ public class Tarjeta implements java.io.Serializable {
         if (monto <= 0) {
             return false;
         }
-
-        return saldo >= monto;
+        return true;
     }
 
     public boolean procesarCobro(double monto) {
@@ -56,11 +55,10 @@ public class Tarjeta implements java.io.Serializable {
             return false;
         }
 
-        saldo = saldo - monto;
         return true;
     }
 
-    public int getNumero() {
+    public long getNumero() {
         return numero;
     }
 

@@ -86,26 +86,75 @@ public class ControladorCompra {
             return;
         }
 
-        Tarjeta tarjeta = cliente.getTarjeta();
+        javax.swing.JComboBox<String> combo = obtenerComboBoxTarjetas();
+        if (combo != null) {
+            for (java.awt.event.ActionListener al : combo.getActionListeners()) {
+                combo.removeActionListener(al);
+            }
+            combo.removeAllItems();
 
-        if (tarjeta != null) {
-            vistaCompra.txtNumeroTarjeta.setText(String.valueOf(tarjeta.getNumero()));
-            vistaCompra.txtNombreTarjeta.setText(tarjeta.getNombre());
-            vistaCompra.txtFechaTarjeta.setText(tarjeta.getFecha());
-            vistaCompra.txtCvv.setText(String.valueOf(tarjeta.getCvv()));
-
-            vistaCompra.txtNumeroTarjeta.setEditable(false);
-            vistaCompra.txtNombreTarjeta.setEditable(false);
-            vistaCompra.txtFechaTarjeta.setEditable(false);
-            vistaCompra.txtCvv.setEditable(false);
-            vistaCompra.txtResumen.setText("Tarjeta cargada correctamente.\nPuedes comprar tus entradas.");
-        } else {
-            vistaCompra.txtNumeroTarjeta.setEditable(true);
-            vistaCompra.txtNombreTarjeta.setEditable(true);
-            vistaCompra.txtFechaTarjeta.setEditable(true);
-            vistaCompra.txtCvv.setEditable(true);
-            vistaCompra.txtResumen.setText("No tienes tarjeta registrada.\nIngresa los datos de tu tarjeta para comprar.");
+            Tarjeta[] tarjetas = cliente.getTarjetas();
+            if (tarjetas != null && tarjetas.length > 0) {
+                for (Tarjeta t : tarjetas) {
+                    if (t != null) {
+                        String numStr = String.valueOf(t.getNumero());
+                        combo.addItem(obtenerTipoTarjeta(numStr) + " - " + enmascararNumero(numStr));
+                    }
+                }
+                combo.addActionListener(e -> seleccionarTarjetaCombo());
+                combo.setSelectedIndex(0);
+                seleccionarTarjetaCombo();
+            } else {
+                vistaCompra.txtNumeroTarjeta.setText("");
+                vistaCompra.txtNombreTarjeta.setText("");
+                vistaCompra.txtResumen.setText("No tienes tarjetas registradas.\nRegistra una tarjeta en Método de Pago.");
+            }
         }
+
+        vistaCompra.txtNumeroTarjeta.setEditable(false);
+        vistaCompra.txtNombreTarjeta.setEditable(false);
+    }
+
+    private void seleccionarTarjetaCombo() {
+        javax.swing.JComboBox<String> combo = obtenerComboBoxTarjetas();
+        if (combo == null) return;
+        int idx = combo.getSelectedIndex();
+        Cliente cliente = auth.getClienteActual();
+        if (cliente != null && idx != -1) {
+            Tarjeta[] tarjetas = cliente.getTarjetas();
+            if (tarjetas != null && idx < tarjetas.length) {
+                Tarjeta t = tarjetas[idx];
+                if (t != null) {
+                    vistaCompra.txtNumeroTarjeta.setText(enmascararNumero(String.valueOf(t.getNumero())));
+                    vistaCompra.txtNombreTarjeta.setText(t.getNombre());
+                }
+            }
+        }
+    }
+
+    private String enmascararNumero(String numStr) {
+        if (numStr.length() > 4) {
+            int asteriscos = numStr.length() - 4;
+            String res = "";
+            for (int i = 0; i < asteriscos; i++) {
+                res += "*";
+            }
+            return res + numStr.substring(asteriscos);
+        }
+        return numStr;
+    }
+
+    private String obtenerTipoTarjeta(String numStr) {
+        if (numStr.startsWith("4") && numStr.length() == 16) {
+            return "Visa";
+        } else if ((numStr.startsWith("5") || numStr.startsWith("2")) && numStr.length() == 16) {
+            return "Mastercard";
+        } else if (numStr.startsWith("3") && numStr.length() == 15) {
+            return "American Express";
+        } else if (numStr.startsWith("3") && numStr.length() == 14) {
+            return "Diners Club";
+        }
+        return "Tarjeta";
     }
 
     private Zona obtenerZonaSeleccionada() {
@@ -164,12 +213,30 @@ public class ControladorCompra {
                 return;
             }
 
-            if (cliente.getTarjeta() == null) {
-                boolean tarjetaRegistrada = registrarTarjetaDesdeVista();
+            javax.swing.JComboBox<String> combo = obtenerComboBoxTarjetas();
+            if (combo == null || combo.getSelectedIndex() == -1) {
+                javax.swing.JOptionPane.showMessageDialog(vistaCompra, "No tienes una tarjeta seleccionada para el pago.");
+                return;
+            }
 
-                if (!tarjetaRegistrada) {
-                    return;
+            int idx = combo.getSelectedIndex();
+            Tarjeta[] tarjetasClie = cliente.getTarjetas();
+            if (tarjetasClie == null || idx >= tarjetasClie.length) {
+                javax.swing.JOptionPane.showMessageDialog(vistaCompra, "Error al seleccionar la tarjeta.");
+                return;
+            }
+
+            try {
+                java.lang.reflect.Field field = cliente.getClass().getDeclaredField("tarjetas");
+                field.setAccessible(true);
+                Tarjeta[] orig = (Tarjeta[]) field.get(cliente);
+                if (orig != null && idx > 0 && idx < orig.length) {
+                    Tarjeta temp = orig[0];
+                    orig[0] = orig[idx];
+                    orig[idx] = temp;
                 }
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
 
             int cantidad = Integer.parseInt(vistaCompra.spnCantidad.getValue().toString());
@@ -185,15 +252,11 @@ public class ControladorCompra {
 
             Tarjeta tarjeta = cliente.getTarjeta();
 
-            vistaCompra.txtNumeroTarjeta.setText(String.valueOf(tarjeta.getNumero()));
+            vistaCompra.txtNumeroTarjeta.setText(enmascararNumero(String.valueOf(tarjeta.getNumero())));
             vistaCompra.txtNombreTarjeta.setText(tarjeta.getNombre());
-            vistaCompra.txtFechaTarjeta.setText(tarjeta.getFecha());
-            vistaCompra.txtCvv.setText(String.valueOf(tarjeta.getCvv()));
 
             vistaCompra.txtNumeroTarjeta.setEditable(false);
             vistaCompra.txtNombreTarjeta.setEditable(false);
-            vistaCompra.txtFechaTarjeta.setEditable(false);
-            vistaCompra.txtCvv.setEditable(false);
 
             String resumen = "";
             resumen += "COMPRA REALIZADA CORRECTAMENTE\n";
@@ -202,7 +265,6 @@ public class ControladorCompra {
             resumen += "Zona: " + venta.getNombreZona() + "\n";
             resumen += "Cantidad de entradas: " + venta.getCantidadEntradas() + "\n";
             resumen += "Monto pagado: S/ " + venta.getMonto() + "\n";
-            resumen += "Saldo restante: S/ " + tarjeta.getSaldo() + "\n";
             resumen += "Entradas disponibles en zona: " + zona.contarDisponibles() + "\n";
 
             vistaCompra.txtResumen.setText(resumen);
@@ -211,32 +273,10 @@ public class ControladorCompra {
             javax.swing.JOptionPane.showMessageDialog(vistaCompra, "Compra realizada correctamente.");
 
         } catch (NumberFormatException e) {
-            javax.swing.JOptionPane.showMessageDialog(vistaCompra, "Revisa los datos numéricos de la tarjeta, CVV o saldo.");
+            javax.swing.JOptionPane.showMessageDialog(vistaCompra, "Revisa los datos numéricos de la tarjeta.");
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(vistaCompra, e.getMessage());
         }
-    }
-
-    private boolean registrarTarjetaDesdeVista() {
-        int numero = Integer.parseInt(vistaCompra.txtNumeroTarjeta.getText().trim());
-        String nombre = vistaCompra.txtNombreTarjeta.getText().trim();
-        String fecha = vistaCompra.txtFechaTarjeta.getText().trim();
-        int cvv = Integer.parseInt(vistaCompra.txtCvv.getText().trim());
-
-        boolean registrada = arregloCliente.registrarTarjeta(
-                numero,
-                nombre,
-                fecha,
-                cvv,
-                0.0
-        );
-
-        if (!registrada) {
-            javax.swing.JOptionPane.showMessageDialog(vistaCompra, "No se pudo registrar la tarjeta. Revisa los datos.");
-            return false;
-        }
-
-        return true;
     }
 
     private void volverMenu() {
@@ -246,5 +286,24 @@ public class ControladorCompra {
         vistaMenuCliente.setResizable(false);
         vistaMenuCliente.setLocationRelativeTo(null);
         vistaMenuCliente.setVisible(true);
+    }
+
+    @SuppressWarnings("unchecked")
+    private javax.swing.JComboBox<String> obtenerComboBoxTarjetas() {
+        try {
+            java.lang.reflect.Field field = vistaCompra.getClass().getDeclaredField("jComboBox1");
+            field.setAccessible(true);
+            return (javax.swing.JComboBox<String>) field.get(vistaCompra);
+        } catch (Exception ex) {
+            for (java.awt.Component comp : vistaCompra.getContentPane().getComponents()) {
+                if (comp instanceof javax.swing.JComboBox) {
+                    javax.swing.JComboBox<String> combo = (javax.swing.JComboBox<String>) comp;
+                    if (combo != vistaCompra.cboConcierto && combo != vistaCompra.cboZona) {
+                        return combo;
+                    }
+                }
+            }
+        }
+        return null;
     }
 }
