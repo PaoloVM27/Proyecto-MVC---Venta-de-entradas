@@ -70,11 +70,11 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
       <Properties>
-        <Property name="text" type="java.lang.String" value="CVV:"/>
+        <Property name="text" type="java.lang.String" value=" CVV / CID:"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="450" y="150" width="30" height="20"/>
+          <AbsoluteConstraints x="410" y="150" width="60" height="20"/>
         </Constraint>
       </Constraints>
     </Component>

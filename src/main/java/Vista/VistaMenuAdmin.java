@@ -35,18 +35,19 @@ public class VistaMenuAdmin extends javax.swing.JFrame {
         btnGestionUsuarios = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblBienvenida.setFont(new java.awt.Font("Segoe UI Black", 2, 14)); // NOI18N
         lblBienvenida.setText("BIENVENIDO");
-        getContentPane().add(lblBienvenida, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 140, -1, -1));
+        getContentPane().add(lblBienvenida, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 120, -1, -1));
 
         btnGenerarConcierto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/GenerarConcierto.png"))); // NOI18N
         btnGenerarConcierto.setText("Generar Concierto");
         btnGenerarConcierto.addActionListener(this::btnGenerarConciertoActionPerformed);
-        getContentPane().add(btnGenerarConcierto, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 320, 190, 30));
+        getContentPane().add(btnGenerarConcierto, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 280, 190, 30));
 
         btnCerrarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Cerrar sesión.png"))); // NOI18N
         btnCerrarSesion.setText("Cerrar Sesion");
@@ -55,11 +56,11 @@ public class VistaMenuAdmin extends javax.swing.JFrame {
         btnGestionVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/GestionVentas.png"))); // NOI18N
         btnGestionVentas.setText("Gestión de Ventas");
         btnGestionVentas.addActionListener(this::btnGestionVentasActionPerformed);
-        getContentPane().add(btnGestionVentas, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 260, 190, 30));
+        getContentPane().add(btnGestionVentas, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 220, 190, 30));
 
         btnGestionUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/GestionUsuarios.png"))); // NOI18N
         btnGestionUsuarios.setText("Gestión de Usuarios");
-        getContentPane().add(btnGestionUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 200, 190, 30));
+        getContentPane().add(btnGestionUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 160, 190, 30));
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 102));
 
@@ -87,6 +88,11 @@ public class VistaMenuAdmin extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, -1));
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/MostrarConcierto.png"))); // NOI18N
+        jButton1.setText("Mostrar Conciertos");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 330, 170, 30));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -97,6 +103,10 @@ public class VistaMenuAdmin extends javax.swing.JFrame {
     private void btnGestionVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionVentasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnGestionVentasActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -128,6 +138,7 @@ public class VistaMenuAdmin extends javax.swing.JFrame {
     public javax.swing.JButton btnGenerarConcierto;
     public javax.swing.JButton btnGestionUsuarios;
     public javax.swing.JButton btnGestionVentas;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     public javax.swing.JLabel lblBienvenida;

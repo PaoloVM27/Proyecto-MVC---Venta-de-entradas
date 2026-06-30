@@ -20,9 +20,19 @@ public class ControladorMenuAdmin {
         this.vistaMenu.btnGestionVentas.addActionListener(e -> irAGestionVentas());
         this.vistaMenu.btnGestionUsuarios.addActionListener(e -> irAGestionUsuarios());
         this.vistaMenu.btnCerrarSesion.addActionListener(e -> cerrarSesion());
+
+        javax.swing.JButton btnMostrar = obtenerBtnMostrarConciertos();
+        if (btnMostrar != null) {
+            btnMostrar.addActionListener(e -> irAMostrarConciertos());
+        }
     }
 
     public void iniciar() {
+        javax.swing.JButton btnMostrar = obtenerBtnMostrarConciertos();
+        if (btnMostrar != null && btnMostrar.getActionListeners().length == 0) {
+            btnMostrar.addActionListener(e -> irAMostrarConciertos());
+        }
+
         if (auth.getUsuarioActual() != null) {
             vistaMenu.lblBienvenida.setText("Bienvenido, " + auth.getUsuarioActual().getNombres());
         }
@@ -31,6 +41,23 @@ public class ControladorMenuAdmin {
         vistaMenu.setResizable(false);
         vistaMenu.setLocationRelativeTo(null);
         vistaMenu.setVisible(true);
+    }
+
+    private void irAMostrarConciertos() {
+        vistaMenu.setVisible(false);
+
+        try {
+            Vista.VistaMostrarConciertos vistaMostrar = new Vista.VistaMostrarConciertos();
+            ControladorMostrarConciertos controlador = new ControladorMostrarConciertos(
+                    vistaMostrar,
+                    vistaMenu,
+                    auth
+            );
+            controlador.iniciar();
+        } catch (Exception ex) {
+            javax.swing.JOptionPane.showMessageDialog(vistaMenu, "Error al abrir la vista de mostrar conciertos: " + ex.getMessage());
+            vistaMenu.setVisible(true);
+        }
     }
 
     private void irAGenerarConcierto() {
@@ -79,5 +106,30 @@ public class ControladorMenuAdmin {
         vistaLogin.setResizable(false);
         vistaLogin.setLocationRelativeTo(null);
         vistaLogin.setVisible(true);
+    }
+
+    private javax.swing.JButton obtenerBtnMostrarConciertos() {
+        try {
+            java.lang.reflect.Field field = vistaMenu.getClass().getDeclaredField("btnMostrarConcierto");
+            field.setAccessible(true);
+            return (javax.swing.JButton) field.get(vistaMenu);
+        } catch (Exception ex1) {
+            try {
+                java.lang.reflect.Field field = vistaMenu.getClass().getDeclaredField("jButton1");
+                field.setAccessible(true);
+                return (javax.swing.JButton) field.get(vistaMenu);
+            } catch (Exception ex2) {
+                for (java.awt.Component comp : vistaMenu.getContentPane().getComponents()) {
+                    if (comp instanceof javax.swing.JButton) {
+                        javax.swing.JButton btn = (javax.swing.JButton) comp;
+                        if (btn != vistaMenu.btnCerrarSesion && btn != vistaMenu.btnGenerarConcierto 
+                            && btn != vistaMenu.btnGestionUsuarios && btn != vistaMenu.btnGestionVentas) {
+                            return btn;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

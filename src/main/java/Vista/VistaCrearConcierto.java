@@ -36,29 +36,40 @@ public class VistaCrearConcierto extends javax.swing.JFrame {
         btnVolver = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setText("NOMBRE DEL CONCIERTO:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 150, 172, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 172, -1));
 
         txtNombreConcierto.addActionListener(this::txtNombreConciertoActionPerformed);
-        getContentPane().add(txtNombreConcierto, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 150, 122, -1));
+        getContentPane().add(txtNombreConcierto, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 130, 122, -1));
 
-        jLabel3.setText("FECHA dd/mm/aaaa :");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 220, -1, -1));
+        jLabel3.setText("FECHA (dd/mm/aaaa):");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, -1));
 
         txtFechaConcierto.addActionListener(this::txtFechaConciertoActionPerformed);
-        getContentPane().add(txtFechaConcierto, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 220, 122, 24));
+        getContentPane().add(txtFechaConcierto, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 180, 122, 24));
 
         btnCrear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/CrearConcierto.png"))); // NOI18N
         btnCrear.setText("Crear Concierto");
-        getContentPane().add(btnCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 290, 140, 30));
+        getContentPane().add(btnCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 290, 140, 30));
 
         btnVolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/volver.png"))); // NOI18N
         btnVolver.setText("Volver");
-        getContentPane().add(btnVolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 360, 100, 40));
+        getContentPane().add(btnVolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 360, 100, 40));
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 102));
 
@@ -85,6 +96,45 @@ public class VistaCrearConcierto extends javax.swing.JFrame {
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 80));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 260, 310, 150));
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 140, 150, -1));
+
+        jLabel4.setText("Nombre:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 140, -1, -1));
+
+        jLabel5.setText("Precio:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 190, -1, -1));
+        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 190, 60, -1));
+
+        jLabel6.setText("Capacidad:");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 190, -1, -1));
+        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 190, 60, -1));
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel7.setText("ZONAS CREADAS");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 230, -1, -1));
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 3, 16)); // NOI18N
+        jLabel8.setText("CREAR ZONAS:");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 100, -1, -1));
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/AgregarZona.png"))); // NOI18N
+        jButton1.setText("Agregar Zona");
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 230, 110, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -125,10 +175,21 @@ public class VistaCrearConcierto extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnCrear;
     public javax.swing.JButton btnVolver;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     public javax.swing.JTextField txtFechaConcierto;
     public javax.swing.JTextField txtNombreConcierto;
     // End of variables declaration//GEN-END:variables

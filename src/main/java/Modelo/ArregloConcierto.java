@@ -171,4 +171,26 @@ public class ArregloConcierto {
         }
         return resultado;
     }
+
+    public boolean eliminarConcierto(String nombre) {
+        int indice = -1;
+        for (int i = 0; i < numConciertos; i++) {
+            if (conciertos[i].getNombre().equalsIgnoreCase(nombre)) {
+                indice = i;
+                break;
+            }
+        }
+
+        if (indice == -1) {
+            return false;
+        }
+
+        for (int i = indice; i < numConciertos - 1; i++) {
+            conciertos[i] = conciertos[i + 1];
+        }
+        conciertos[numConciertos - 1] = null;
+        numConciertos--;
+
+        return archivoConcierto.guardarConciertos(conciertos, numConciertos);
+    }
 }

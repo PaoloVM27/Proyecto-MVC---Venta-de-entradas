@@ -63,8 +63,8 @@ public class VistaMetodoPago extends javax.swing.JFrame {
         jLabel4.setText("Fecha vencimiento:");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 110, -1, 20));
 
-        jLabel5.setText("CVV:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 150, 30, 20));
+        jLabel5.setText(" CVV / CID:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 150, 60, 20));
 
         txtNombreTarjeta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
